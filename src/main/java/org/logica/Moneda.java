@@ -1,4 +1,6 @@
-package Tarea1;
+package org.logica;
+
+import java.util.ArrayList;
 
 /**
  * Clase abstarcta que establece el comportamiento de una moneda dentro del programa.
@@ -6,14 +8,22 @@ package Tarea1;
  */
 public abstract class Moneda implements Comparable<Moneda> {
 
+    private int serie;
+
     //Constructor
-    public Moneda(){}
+    public Moneda(int s){
+        serie = s;
+    }
 
     /**
      * Metodo abstracto utilizado para obtener el valor de la moneda.
      * @return El valor entero de la denominacion (100, 500, 1000).
      */
     public abstract int getValor();
+
+    public int getSerie() {
+        return serie;
+    }
 
     /**
      * Metodo que devuelve una cadena de texto que identifica a la moneda por su valor y serie.

@@ -1,4 +1,4 @@
-package Tarea1;
+package org.logica;
 
 import java.util.ArrayList;
 
@@ -31,9 +31,25 @@ public class Deposito<T> {
      *         o null si el depósito no tiene elementos.
      */
     public T getElemento(){
-        if (al.size() == 0){
+        if (al.isEmpty()){
             return null;
         }
         return al.remove(0);
+    }
+
+    public boolean estaVacio() {
+        return al.isEmpty();
+    }
+
+    public int tamaño() {
+        return al.size();
+    }
+
+    public T getElementoEn(int index) {
+        if (index >= 0 && index < al.size()) {
+            return al.get(index);
+        }
+
+        return null;
     }
 }

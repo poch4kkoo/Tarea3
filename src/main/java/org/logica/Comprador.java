@@ -1,4 +1,4 @@
-package Tarea1;
+package org.logica;
 
 /**
  *
@@ -12,17 +12,14 @@ package Tarea1;
 public class Comprador {
     /** Guarda el nombre del producto comprado */
     private String tipo;
-    /** Guarda el valor total del vuelto */
-    private int vuelto = 0;
+
+    private Deposito<Moneda> monedero;
+    private Producto productoListo;
 
     /**
      * Constructor de Comprador. Intenta realizar una compra en el expendedor.
      * Si la compra es exitosa, consume el producto y da vuelto. Si ocurre un error,
      * se retorna un mensaje con el respectivo fallo, y devuelve la moneda.
-     *
-     * @param m            La Moneda que se entrega para realizar la compra.
-     * @param TipoProducto El nombre del producto a comprar
-     * @param exp          El Expendedor al que se le realiza la compra.
      *
      * El constructor maneja los posibles eventos o excepciones.
      *
@@ -30,55 +27,53 @@ public class Comprador {
      *     Si el pago es insuficiente, atrapa {@link PagoInsuficienteException}.
      *     En ambos casos, asegura la recuperación de la moneda como vuelto.
      */
-    public Comprador(Moneda m, EnumProducto TipoProducto, Expendedor exp){
-        Producto p = null;
-        try {
-            p = exp.comprarProducto(m, TipoProducto);
+    public Comprador(){
 
-            //Error en caso de acabarse el stock
-        } catch (NoHayProductoException e) {
-            System.out.println("Error: " + e.getMessage());
-            p = null;
+        monedero = new Deposito<>();
+        productoListo = null;
 
-            //Error en caso de Pago insuficiente
-        } catch (PagoInsuficienteException e){
-            System.out.println("Error en el pago: " + e.getMessage());
-            p = null;
+        monedero.addElemento(new Moneda100(1));
+        monedero.addElemento(new Moneda100(2));
+        monedero.addElemento(new Moneda100(3));
+        monedero.addElemento(new Moneda100(4));
+        monedero.addElemento(new Moneda100(5));
+        monedero.addElemento(new Moneda500(6));
+        monedero.addElemento(new Moneda500(7));
+        monedero.addElemento(new Moneda500(8));
+        monedero.addElemento(new Moneda1000(9));
+        monedero.addElemento(new Moneda1000(10));
+        monedero.addElemento(new Moneda1000(11));
 
-            //error en caso de moneda nula (pago incorrecto)
-        } catch (PagoIncorrectoException e){
-            System.out.println("Error de moneda: " + e.getMessage());
-            p =null;
-        }
+    }
 
-        if (p != null) {
-            tipo = p.consumir();
-        } else {
-            tipo = null;
-        }
+    public Moneda escogerMoneda() {
+        return monedero.getElemento();
+    }
 
-        Moneda aux = exp.getVuelto();
-
-        //Devuelve en monedas de 100
-        while (aux != null){
-            vuelto += aux.getValor();
-            aux = exp.getVuelto();
+    public void recogerVuelto(Moneda m) {
+        if (m != null) {
+            monedero.addElemento(m);
         }
     }
 
-    /**
-     * Permite conocer el vuelto total recibido tras la compra.
-     * @return El valor entero del vuelto recuperado.
-     */
-    public int cuantoVuelto(){
-        return vuelto;
+    public void recogerProducto( Producto p) {
+        if (productoListo != null) {
+
+            tipo = productoListo.consumir();
+            productoListo = null;
+        }
     }
 
-    /**
-     * Entrega el nombre del producto consumido.
-     * @return Un String con el nombre del producto consumido, null en caso de error.
-     */
-    public String queProducto(){
+    //GETTERS
+    public Deposito<Moneda> getMonedero() {
+        return monedero;
+    }
+
+    public Producto getProductoListo() {
+        return productoListo;
+    }
+
+    public String getTipo() {
         return tipo;
     }
 }

@@ -1,4 +1,4 @@
-package Tarea1;
+package org.logica;
 
 /**
  * Enumeracion que define el catalogo de productos disponibles en el expendedor.

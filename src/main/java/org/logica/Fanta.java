@@ -1,4 +1,4 @@
-package Tarea1;
+package org.logica;
 
 /**
  *  Representa una bebida de marca Fanta.

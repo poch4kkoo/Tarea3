@@ -1,4 +1,4 @@
-package Tarea1;
+package org.logica;
 
 /**
  * Excepción lanzada cuando no se inserta una moneda valida.

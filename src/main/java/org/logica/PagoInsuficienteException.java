@@ -1,4 +1,4 @@
-package Tarea1;
+package org.logica;
 
 /**
  * Excepción lanzada cuando el dinero ingresado no alcanza para comprar el

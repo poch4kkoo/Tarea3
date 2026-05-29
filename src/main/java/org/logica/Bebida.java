@@ -1,4 +1,4 @@
-package Tarea1;
+package org.logica;
 
 /**
  * Clase abstracta que representa las bebidas.

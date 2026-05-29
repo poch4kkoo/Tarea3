@@ -1,4 +1,4 @@
-package Tarea1;
+package org.logica;
 
 /**
  * Representa una moneda con valor de $1000.
@@ -10,7 +10,7 @@ public class Moneda1000 extends Moneda{
     /**
      * Constructor que invoca al constructor de la clase padre Moneda.
      */
-    public Moneda1000(){ super();}
+    public Moneda1000(int s){ super(s);}
 
     /**
      * Devuelve el valor nominal de la moneda.
