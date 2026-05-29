@@ -1,6 +1,5 @@
-package org.grafica;
+package org.GUI;
 
-import org.logica.*;
 import javax.swing.*;
 import java.awt.*;
 
