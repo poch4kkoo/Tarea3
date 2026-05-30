@@ -1,5 +1,6 @@
 package org;
 
+import org.GUI.PanelPrincipal;
 import org.GUI.Ventana;
 
 public class Main {
