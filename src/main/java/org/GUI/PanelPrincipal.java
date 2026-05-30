@@ -10,16 +10,13 @@ public class PanelPrincipal extends JPanel {
 
     public PanelPrincipal() {
         super();
-        this.setSize(600,400);
+        this.setSize(600, 800);
+        this.setLayout(new GridBagLayout());
         exp = new PanelExpendedor();
-   //     com = new PanelComprador();
+        //     com = new PanelComprador();
         this.setBackground(Color.white);
-    }
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-    //    com.paintComponent(g);
-        exp.paintComponent(g);
+        // Agregamos el componente al panel de forma real
+        this.add(exp);
     }
-
 }

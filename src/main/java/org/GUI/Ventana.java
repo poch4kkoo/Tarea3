@@ -10,10 +10,15 @@ public class Ventana extends JFrame {
         super();
         this.setLayout(new BorderLayout());
         pri = new PanelPrincipal();
+
+        setTitle("Expendedor de Bebidas");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE); //cerrar aplicación
         this.add(pri,BorderLayout.CENTER); //se agrega al centro
 
-        this.setSize(800,600);
+        pack();
+        this.setSize(VGUI.LARGO,VGUI.ALTO);
+        setLocationRelativeTo(null);
         this.setVisible(true);
+
     }
 }

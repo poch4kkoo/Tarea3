@@ -2,10 +2,18 @@ package org.GUI;
 
 import java.awt.*;
 
-public interface CustomGUI {
+public interface VGUI {
     int ALTO = 800;
-    int LARGO = 600;
+    int LARGO = 650;
+
     String FONT = "Calibri";
+
+    public class Borde
+    {
+        public static final int GRANDE = 40;
+        public static final int NORMAL = 20;
+        public static final int PEQUENO = 10;
+    }
 
     public class CustomColor
     {
