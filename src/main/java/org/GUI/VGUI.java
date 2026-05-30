@@ -22,9 +22,9 @@ public interface VGUI {
         public static final Color VERDE = new Color(134, 194, 50);
         public static final Color VERDE_EXP = new Color(104, 154, 40);
         public static final Color ROSA = new Color(255, 132, 132);
-        public static final Color GRIS= new Color(153, 153, 153);
+        public static final Color GRIS_AZUL= new Color(223, 223, 233);
         public static final Color BLANCO = Color.white;
-        public static final Color BLANCO_OSCURO = new Color(196, 196, 196);
+        public static final Color GRIS_OSCURO = new Color(26, 26, 26);
     }
 
     public class TamanoFuente
