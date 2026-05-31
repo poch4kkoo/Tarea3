@@ -1,5 +1,7 @@
 package org.GUI;
 
+import org.logica.Expendedor;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,12 +9,15 @@ public class PanelPrincipal extends JPanel {
 
     //private PanelComprador com;
     private PanelExpendedor exp;
+    private Expendedor llenarExp;
 
     public PanelPrincipal() {
         super();
         this.setSize(600, 800);
         this.setLayout(new GridBagLayout());
-        exp = new PanelExpendedor();
+
+        llenarExp = new Expendedor(2);
+        exp = new PanelExpendedor(llenarExp);
         //     com = new PanelComprador();
         this.setBackground(Color.white);
 

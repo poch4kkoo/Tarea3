@@ -1,5 +1,8 @@
 package org.GUI;
 
+import org.logica.Deposito;
+import org.logica.Expendedor;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -9,14 +12,34 @@ import java.io.IOException;
 
 public class PanelExpendedor extends JPanel {
 
-    private Image iCoca;
-    private Image iFanta;
+    private Image imgCoca;
+    private Image imgFanta;
+    private Image imgSprite;
+    private Image imgSuper8;
+    private Image imgSnickers;
 
-    public PanelExpendedor() {
+    private Expendedor exp;
+    private Deposito[][] estantes;
+
+    public PanelExpendedor(Expendedor exp) {
+        this.exp = exp;
         super();
         this.setLayout(new BorderLayout());
 
         setOpaque(false);
+
+        this.estantes = new Deposito[][] {
+                // Fila 0: CocaCola y Fanta
+                {exp.getCoca(), exp.getFanta()},
+
+                // Fila 1: Sprite
+                {exp.getSprite()},
+
+                // Fila 2: los dulces
+                {exp.getSuper8(), exp.getSnickers()}
+        };
+
+
 
         Dimension tamano = new Dimension(600, 800);
 
@@ -25,9 +48,28 @@ public class PanelExpendedor extends JPanel {
         setMinimumSize(tamano);
         setMaximumSize(tamano);
 
-        iCoca = new ImageIcon("C:Resources/Productos/cocacola.png").getImage();
-        iFanta = new ImageIcon("Resources/Productos/fanta.png").getImage();
+        try {
+            imgCoca = ImageIO.read(getClass().getResource("/Productos/cocacola.png"));
+            imgFanta = ImageIO.read(getClass().getResource("/Productos/fanta.png"));
+            imgSprite = ImageIO.read(getClass().getResource("/Productos/sprite.png"));
+            imgSuper8 = ImageIO.read(getClass().getResource("/Productos/super8.png"));
+            imgSnickers = ImageIO.read(getClass().getResource("/Productos/snickers.png"));
+            System.out.println("Las imagenes cargaron exitosamente");
+        } catch (IOException e) {
+            System.out.println("ERROR: No se pudo cargar alguna imagen. Revisa las rutas o las carpetas del IDE.");
+            e.printStackTrace();
+        }
 
+
+    }
+
+    private Image obtenerImagen(Deposito deposito) {
+        if (deposito == exp.getCoca()) return imgCoca;
+        if (deposito == exp.getFanta()) return imgFanta;
+        if (deposito == exp.getSprite()) return imgSprite;
+        if (deposito == exp.getSuper8()) return imgSuper8;
+        if (deposito == exp.getSnickers()) return imgSnickers;
+        return null;
     }
 
     @Override
@@ -51,23 +93,32 @@ public class PanelExpendedor extends JPanel {
         g2d.setColor(VGUI.CustomColor.GRIS_AZUL);
         g2d.fillRect(20, 20, 400, 400);
 
-        // Aqui Se colocaran las imagenes
-        for (int i = 0; i < 4; i++) {
-
-            int yRepisa = (100 + (100 * i));
+        // Recorrer las filas
+        for (int fila = 0; fila < estantes.length; fila++) {
+            int yRepisa = 100 + (100 * fila);
 
             g2d.setColor(VGUI.CustomColor.BLANCO);
             g2d.fillRect(20, yRepisa, 400, 9);
 
+            // Posicion horizontal en estantes
+            int xProducto = 40;
 
-            for (int j=0; j < 4; j++){
-                g2d.drawImage(iCoca, 50, yRepisa - 50, 30, 50, this);
-                g2d.drawImage(iFanta, 150, yRepisa - 50, 30, 50, this);
+            // Recorrer los depósitos que asignamos a esta fila
+            for (Deposito depositoActual : estantes[fila]) {
+
+                int cantidadEnDeposito = depositoActual.tamaño();
+                Image imagenADibujar = obtenerImagen(depositoActual); // Método auxiliar
+
+                // Dibujar los productos
+                for (int i = 0; i < cantidadEnDeposito; i++) {
+                    if (imagenADibujar != null) {
+                        g2d.drawImage(imagenADibujar, xProducto, yRepisa - 50, 30, 50, this);
+
+                    }
+                    // Avanzamos X para el siguiente producto
+                    xProducto += 60;
+                }
             }
-
-            // DONDE CAE EL PRODUCTO
-            g2d.setColor(VGUI.CustomColor.GRIS_AZUL);
-            g2d.fillRect(100 + 20, 500, 200, 75);
         }
     }
 }
