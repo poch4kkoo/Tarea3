@@ -57,6 +57,7 @@ public class Comprador {
     }
 
     public void recogerProducto( Producto p) {
+        productoListo = p;
         if (productoListo != null) {
 
             tipo = productoListo.consumir();
