@@ -95,7 +95,7 @@ public class PanelExpendedor extends JPanel {
 
         // Recorrer las filas
         for (int fila = 0; fila < estantes.length; fila++) {
-            int yRepisa = 100 + (100 * fila);
+            int yRepisa = 130 + (130 * fila);
 
             g2d.setColor(VGUI.CustomColor.BLANCO);
             g2d.fillRect(20, yRepisa, 400, 9);
@@ -112,7 +112,7 @@ public class PanelExpendedor extends JPanel {
                 // Dibujar los productos
                 for (int i = 0; i < cantidadEnDeposito; i++) {
                     if (imagenADibujar != null) {
-                        g2d.drawImage(imagenADibujar, xProducto, yRepisa - 50, 30, 50, this);
+                        g2d.drawImage(imagenADibujar, xProducto, yRepisa - 80, 64, 80, this);
 
                     }
                     // Avanzamos X para el siguiente producto
