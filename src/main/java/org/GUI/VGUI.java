@@ -20,6 +20,7 @@ public interface VGUI {
         public static final Color AZUL_MARCA = new Color(35, 116, 171);
         public static final Color NEGRO = new Color(34, 38, 41);
         public static final Color VERDE = new Color(134, 194, 50);
+        public static final Color CIAN = new Color(100,200,200);
         public static final Color VERDE_EXP = new Color(104, 154, 40);
         public static final Color ROSA = new Color(255, 132, 132);
         public static final Color GRIS_AZUL= new Color(223, 223, 233);

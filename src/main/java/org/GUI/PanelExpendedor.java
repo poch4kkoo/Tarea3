@@ -89,7 +89,15 @@ public class PanelExpendedor extends JPanel {
         // DETALLES
         g2d.setColor(VGUI.CustomColor.GRIS_OSCURO);
         g2d.fillRect(450, 20, 130, 600);
+        g2d.setColor(VGUI.CustomColor.GRIS_AZUL);
         g2d.fillRoundRect(100 + 15, 495, 210, 85, VGUI.Borde.PEQUENO, VGUI.Borde.PEQUENO);
+
+        // INTERIOR EXPENDEDOR
+        g2d.fillRect(20, 20, 400, 400);
+
+        //Pantalla Expendedor
+        g2d.setColor(VGUI.CustomColor.CIAN);
+        g2d.fillRect(460, 60, 110, 30);
 
         // INTERIOR EXPENDEDOR
         g2d.setColor(VGUI.CustomColor.GRIS_AZUL);
@@ -118,15 +126,18 @@ public class PanelExpendedor extends JPanel {
 
 
                     // Dibujar el stock de productos
-                    for (int j = 0; j < cantidadEnDeposito && j < 10; j++) {
-                        if (imagenADibujar != null) {
-                            g2d.drawImage(imagenADibujar, xDinamico, yDinamico - 80, 64, 80, this);
-                            //resortes extra por cada producto:
-                            g2d.drawImage(imgResorte, xDinamico + 10, yDinamico - 30, 40, 40, this);
-
-                            yDinamico += 1;
-                            xDinamico += 2;
+                    for (int j = 0; j < cantidadEnDeposito || j < 5; j++) {
+                        if (j>10) {
+                            break;
                         }
+                        if (cantidadEnDeposito > j) {
+                            g2d.drawImage(imagenADibujar, xDinamico, yDinamico - 80, 64, 80, this);
+                        }
+                        //resortes extra por cada producto:
+                        g2d.drawImage(imgResorte, xDinamico + 10, yDinamico - 30, 40, 40, this);
+
+                        yDinamico += 1;
+                        xDinamico += 2;
                     }
 
                 // El resorte siempre se dibuja, haya o no producto
