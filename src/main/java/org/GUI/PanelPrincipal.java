@@ -17,7 +17,7 @@ public class PanelPrincipal extends JPanel {
         this.setSize(600, 800);
         this.setLayout(new GridBagLayout());
 
-        llenarExp = new Expendedor(2);
+        llenarExp = new Expendedor(20);
         exp = new PanelExpendedor(llenarExp);
         com = new PanelComprador(new Comprador(), llenarExp);
         this.setBackground(Color.white);

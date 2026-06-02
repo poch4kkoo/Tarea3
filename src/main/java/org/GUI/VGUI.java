@@ -4,7 +4,7 @@ import java.awt.*;
 
 public interface VGUI {
     int ALTO = 800;
-    int LARGO = 650;
+    int LARGO = 1200;
 
     String FONT = "Calibri";
 
@@ -25,6 +25,7 @@ public interface VGUI {
         public static final Color GRIS_AZUL= new Color(223, 223, 233);
         public static final Color BLANCO = Color.white;
         public static final Color GRIS_OSCURO = new Color(26, 26, 26);
+        public static final Color GRIS_CLARO = new Color(246, 246, 245);
     }
 
     public class TamanoFuente
