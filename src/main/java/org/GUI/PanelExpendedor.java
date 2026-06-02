@@ -28,16 +28,17 @@ public class PanelExpendedor extends JPanel {
 
         setOpaque(false);
 
-        this.estantes = new Deposito[][] {
+        this.estantes = new Deposito[3][4];
                 // Fila 0: CocaCola y Fanta
-                {exp.getCoca(), exp.getFanta(), exp.getCoca(), exp.getFanta()},
+                estantes[0][0] = exp.getCoca();
+                estantes[0][1] = exp.getFanta();
 
                 // Fila 1: Sprite
-                {exp.getSprite()},
+                estantes[1][0] = exp.getSprite();
 
-                // Fila 2: los dulces
-                {exp.getSuper8(), exp.getSnickers()}
-        };
+                // Fila 2: Dulces
+                estantes[2][0] = exp.getSuper8();
+                estantes[2][1] = exp.getSnickers();
 
 
 
@@ -97,46 +98,56 @@ public class PanelExpendedor extends JPanel {
         // Recorrer las filas
         for (int fila = 0; fila < estantes.length; fila++) {
             int yRepisa = 130 + (130 * fila);
-            int auxyRepisa = yRepisa;
 
+            // Base del estante
             g2d.setColor(VGUI.CustomColor.GRIS_CLARO);
-            g2d.fillRect(20, yRepisa-5, 400, 20);
+            g2d.fillRect(20, yRepisa - 5, 400, 20);
 
-            // Recorrer los depósitos que asignamos a esta fila
-            for (int i = 0; i < estantes[fila].length; i++) {
-                Deposito depositoActual = estantes[fila][i];
+            // Iteramos sobre las 4 columnas
+            for (int col = 0; col < estantes[fila].length; col++) {
+                Deposito depositoActual = estantes[fila][col];
+                int xProducto = 20 + (100 * col);
 
-                // Posicion horizontal en estantes
-                int xProducto = 20 + (100*i);
+                int yDinamico = yRepisa;
+                int xDinamico = xProducto;
 
-                // Posicion vertical en estantes
-                yRepisa = auxyRepisa;
+                // Solo si el espacio actual de la matriz TIENE un depósito asignado
+                if (depositoActual != null) {
+                    int cantidadEnDeposito = depositoActual.tamaño();
+                    Image imagenADibujar = obtenerImagen(depositoActual);
 
-                int cantidadEnDeposito = depositoActual.tamaño();
-                Image imagenADibujar = obtenerImagen(depositoActual); // Método auxiliar
 
-                // Dibujar los productos
-                for (int j = 0; j < cantidadEnDeposito; j++) {
-                    if (imagenADibujar != null) {
-                        g2d.drawImage(imagenADibujar, xProducto, yRepisa - 80, 64, 80, this);
-                        g2d.drawImage(imgResorte, xProducto+10, yRepisa-30, 40, 40, this);
+                    // Dibujar el stock de productos
+                    for (int j = 0; j < cantidadEnDeposito && j < 10; j++) {
+                        if (imagenADibujar != null) {
+                            g2d.drawImage(imagenADibujar, xDinamico, yDinamico - 80, 64, 80, this);
+                            //resortes extra por cada producto:
+                            g2d.drawImage(imgResorte, xDinamico + 10, yDinamico - 30, 40, 40, this);
 
-                        if (j < 10) {
-                            // Avanzamos un par de pixeles para el mismo producto
-                            xProducto += 2;
-                            yRepisa += 1;
+                            yDinamico += 1;
+                            xDinamico += 2;
                         }
+                    }
 
+                // El resorte siempre se dibuja, haya o no producto
+                }  else {
+                    int r = 0;
+                    while (r<5) {
+                        g2d.drawImage(imgResorte, xDinamico + 10, yDinamico - 30, 40, 40, this);
+
+                        yDinamico += 1;
+                        xDinamico += 2;
+
+                        r++;
                     }
                 }
             }
 
             // Etiquetas de precios
             g2d.setColor(VGUI.CustomColor.BLANCO);
-            g2d.fillRect(20, yRepisa-4, 400, 15);
-
+            g2d.fillRect(20, yRepisa + 5, 400, 15);
         }
-
     }
 }
+
 
