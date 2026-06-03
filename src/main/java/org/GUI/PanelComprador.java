@@ -63,7 +63,7 @@ public class PanelComprador extends JPanel {
 
 
         graphics2D.setColor(new Color(34, 38, 41));
-        graphics2D.fillRect(0, 0, getWidth(), getHeight());
+        graphics2D.fillRect(10, 0, getWidth(), getHeight());
 
 
         graphics2D.setColor(new Color(45, 49, 53));
