@@ -4,6 +4,8 @@ import org.logica.Deposito;
 import org.logica.Expendedor;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelExpendedor extends JPanel {
 
@@ -32,7 +34,38 @@ public class PanelExpendedor extends JPanel {
 
         // Fila 2: Dulces
         estantes[2] = new Estante(new Deposito[]{exp.getSuper8(), exp.getSnickers(), null, null}, 390);
+
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int x = e.getX();
+                int y = e.getY();
+
+                // El listener estara ubicado donde esta la pantalla CIAN
+                if (x >= 460 && x <= 570 && y >= 100 && y <= 190) {
+                    abrirSelectorBebidas();
+                }
+            }
+        });
     }
+
+
+    private void abrirSelectorBebidas() {
+
+        Window ventanaPrincipal = SwingUtilities.getWindowAncestor(this);
+
+        JDialog dialogo = new JDialog(ventanaPrincipal, "Seleccione su producto", Dialog.ModalityType.APPLICATION_MODAL);
+
+        // Instancia el panel con los botones que creamos anteriormente
+        PanelControles panelControles = new PanelControles(this.exp);
+
+        dialogo.add(panelControles);
+        dialogo.pack();
+        dialogo.setLocationRelativeTo(ventanaPrincipal);
+        dialogo.setVisible(true);
+    }
+
+
 
 
     public Image obtenerImagen(Deposito deposito) {
@@ -50,7 +83,7 @@ public class PanelExpendedor extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        dibujarMuebleEstructura(g2d);
+        dibujarExpendedor(g2d);
 
         // Cada estante se dibuja a si mismo
         for (Estante estante : estantes) {
@@ -58,7 +91,8 @@ public class PanelExpendedor extends JPanel {
         }
     }
 
-    private void dibujarMuebleEstructura(Graphics2D g2d) {
+
+    private void dibujarExpendedor(Graphics2D g2d) {
         // EXPENDEDOR CON BORDES SUAVES
         g2d.setColor(VGUI.CustomColor.NEGRO);
         g2d.fillRoundRect(0, 0, getWidth(), getHeight() - 20, VGUI.Borde.NORMAL, VGUI.Borde.NORMAL);
@@ -76,10 +110,11 @@ public class PanelExpendedor extends JPanel {
 
         // Pantalla del Expendedor
         g2d.setColor(VGUI.CustomColor.CIAN);
-        g2d.fillRect(460, 100, 110, 30);
+        g2d.fillRect(460, 100, 110, 90);
 
         // INTERIOR EXPENDEDOR
         g2d.setColor(VGUI.CustomColor.GRIS_AZUL);
         g2d.fillRect(20, 20, 400, 400);
     }
 }
+
