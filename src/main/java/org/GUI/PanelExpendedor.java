@@ -2,21 +2,23 @@ package org.GUI;
 
 import org.logica.Deposito;
 import org.logica.Expendedor;
+import org.logica.EnumProducto;
+import org.logica.Producto;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PanelExpendedor extends JPanel {
 
     private final Expendedor exp;
-    private final PanelPrincipal principal;
     private final Estante[] estantes;
 
-    public PanelExpendedor(Expendedor exp, PanelPrincipal principal) {
+    public PanelExpendedor(Expendedor exp) {
         this.exp = exp;
-        this.principal = principal;
-        this.setLayout(new BorderLayout());
+
+        //layout nulo para añadir botones interactivos manteniendo el diseño original
+        this.setLayout(null);
         setOpaque(false);
 
         // Fijar dimensiones del panel
@@ -25,7 +27,7 @@ public class PanelExpendedor extends JPanel {
         setMinimumSize(tamano);
         setMaximumSize(tamano);
 
-        // Inicializamos el array de filas calculando su posición Y
+        //Inicializamos el array de filas calculando su posición Y
         this.estantes = new Estante[3];
 
         // Fila 0: CocaCola y Fanta
@@ -37,38 +39,48 @@ public class PanelExpendedor extends JPanel {
         // Fila 2: Dulces
         estantes[2] = new Estante(new Deposito[]{exp.getSuper8(), exp.getSnickers(), null, null}, 390);
 
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int x = e.getX();
-                int y = e.getY();
+        crearBotonesCompra();
+    }
 
-                // El listener estara ubicado donde esta la pantalla CIAN
-                if (x >= 460 && x <= 570 && y >= 100 && y <= 190) {
-                    abrirSelectorBebidas();
+    private void crearBotonesCompra() {
+        String[] nombres = {"CocaCola", "Fanta", "Sprite", "Super8", "Snickers"};
+        EnumProducto[] productos = {
+                EnumProducto.COCA,
+                EnumProducto.FANTA,
+                EnumProducto.SPRITE,
+                EnumProducto.SUPER8,
+                EnumProducto.SNICKERS
+        };
+
+        for (int i = 0; i < nombres.length; i++) {
+            JButton btn = new JButton(nombres[i]);
+            btn.setBounds(465, 150 + (i * 60), 100, 35);
+
+            final EnumProducto productoSeleccionado = productos[i];
+
+            btn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (PanelComprador.monedaSeleccionada == null) {
+                        JOptionPane.showMessageDialog(null, "Selecciona una moneda primero.");
+                        return;
+                    }
+                    try {
+                        exp.comprarProducto(PanelComprador.monedaSeleccionada, productoSeleccionado);
+                        PanelComprador.monedaSeleccionada = null; // Reiniciar selección
+
+                        //refrescar toda la ventana para actualizar ambos paneles simultaneamente
+                        if (SwingUtilities.getWindowAncestor(PanelExpendedor.this) != null) {
+                            SwingUtilities.getWindowAncestor(PanelExpendedor.this).repaint();
+                        }
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+                    }
                 }
-            }
-        });
+            });
+            this.add(btn);
+        }
     }
-
-
-    private void abrirSelectorBebidas() {
-        Window ventanaPadre = SwingUtilities.getWindowAncestor(this);
-        JDialog dialogo = new JDialog(ventanaPadre, "Seleccione su producto", Dialog.ModalityType.APPLICATION_MODAL);
-
-        PanelComprador panelComprador = this.principal.getPanelComprador();
-
-        // Pasamos tanto el expendedor como el panel del comprador
-        PanelControles panelControles = new PanelControles(this.exp, panelComprador);
-
-        dialogo.add(panelControles);
-        dialogo.pack();
-        dialogo.setLocationRelativeTo(ventanaPadre);
-        dialogo.setVisible(true);
-    }
-
-
-
 
     public Image obtenerImagen(Deposito deposito) {
         if (deposito == exp.getCoca()) return Imagenes.get("cocacola");
@@ -79,22 +91,39 @@ public class PanelExpendedor extends JPanel {
         return null;
     }
 
+    // metodo de ayuda alternativo para cuando se extrae directamente del deposito de productos
+    public Image obtenerImagenDeProducto(Producto p) {
+        if (p==null) return null;
+        String clase=p.getClass().getSimpleName().toLowerCase(); //
+        return Imagenes.get(clase);
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        dibujarExpendedor(g2d);
+        dibujarMuebleEstructura(g2d);
 
         // Cada estante se dibuja a si mismo
         for (Estante estante : estantes) {
             estante.dibujar(g2d, this);
         }
+
+        //dibujar producto en la salida(abajo)
+        if (exp.getDepProducto()!=null && !exp.getDepProducto().estaVacio()) {
+            //obtenemos el producto que esta esperando ser retirado
+            Producto comprado=exp.getDepProducto().getElementoEn(0);
+            Image imgProducto=obtenerImagenDeProducto(comprado);
+            if (imgProducto!=null) {
+                //se dibuja centrado dentro del compartimento gris azul
+                g2d.drawImage(imgProducto, 195, 510, 50, 55, this);
+            }
+        }
     }
 
-
-    private void dibujarExpendedor(Graphics2D g2d) {
+    private void dibujarMuebleEstructura(Graphics2D g2d) {
         // EXPENDEDOR CON BORDES SUAVES
         g2d.setColor(VGUI.CustomColor.NEGRO);
         g2d.fillRoundRect(0, 0, getWidth(), getHeight() - 20, VGUI.Borde.NORMAL, VGUI.Borde.NORMAL);
@@ -112,11 +141,10 @@ public class PanelExpendedor extends JPanel {
 
         // Pantalla del Expendedor
         g2d.setColor(VGUI.CustomColor.CIAN);
-        g2d.fillRect(460, 100, 110, 90);
+        g2d.fillRect(460, 100, 110, 30);
 
         // INTERIOR EXPENDEDOR
         g2d.setColor(VGUI.CustomColor.GRIS_AZUL);
         g2d.fillRect(20, 20, 400, 400);
     }
 }
-
