@@ -2,8 +2,11 @@ package org.GUI;
 
 import org.logica.Deposito;
 import org.logica.Expendedor;
+import org.logica.EnumProducto;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PanelExpendedor extends JPanel {
 
@@ -12,7 +15,8 @@ public class PanelExpendedor extends JPanel {
 
     public PanelExpendedor(Expendedor exp) {
         this.exp = exp;
-        this.setLayout(new BorderLayout());
+        //agregue layout nulo para posicionar botones, sin modificar los tamaños del panel
+        this.setLayout(null);
         setOpaque(false);
 
         // Fijar dimensiones del panel
@@ -32,8 +36,47 @@ public class PanelExpendedor extends JPanel {
 
         // Fila 2: Dulces
         estantes[2] = new Estante(new Deposito[]{exp.getSuper8(), exp.getSnickers(), null, null}, 390);
+
+        //agregue
+        crearBotonesCompra();
     }
 
+    //agregue metodo que genera la capacidad de hacer clics (botones)
+    private void crearBotonesCompra() {
+        String[] nombres={"CocaCola","Fanta","Sprite","Super8","Snickers"};
+        EnumProducto[] productos={
+                EnumProducto.COCA,
+                EnumProducto.FANTA,
+                EnumProducto.SPRITE,
+                EnumProducto.SUPER8,
+                EnumProducto.SNICKERS
+        };
+
+        for (int i=0;i<nombres.length;i++) {
+            JButton btn=new JButton(nombres[i]);
+            btn.setBounds(465,150 +(i * 60),100,35); //se acomodan en el rectángulo gris
+
+            final EnumProducto productoSeleccionado=productos[i];
+
+            btn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (PanelComprador.monedaSeleccionada == null) {
+                        JOptionPane.showMessageDialog(null, "Selecciona una moneda primero.");
+                        return;
+                    }
+                    try {
+                        exp.comprarProducto(PanelComprador.monedaSeleccionada, productoSeleccionado);
+                        PanelComprador.monedaSeleccionada = null;
+                        SwingUtilities.getWindowAncestor(PanelExpendedor.this).repaint();
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Error: "+ex.getMessage());
+                    }
+                }
+            });
+            this.add(btn);
+        }
+    }
 
     public Image obtenerImagen(Deposito deposito) {
         if (deposito == exp.getCoca()) return Imagenes.get("cocacola");
