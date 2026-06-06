@@ -54,6 +54,7 @@ public class PanelComprador extends JPanel {
         add(botonConsumir, BorderLayout.SOUTH);
     }
 
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -134,6 +135,7 @@ public class PanelComprador extends JPanel {
                 int ty = yFinal + (diametro - fm.getHeight()) / 2 + fm.getAscent();
                 graphics2D.drawString(textoValor, tx, ty);
             }
+
         }
 
         graphics2D.setStroke(new BasicStroke(1f));
@@ -166,4 +168,19 @@ public class PanelComprador extends JPanel {
             graphics2D.drawString("Mano vacia", 88, 550);
         }
     }
+
+
+    // Obtenemos la moneda seleccionada por el mouse
+
+    public Moneda getMonedaSeleccionada() {
+        return this.monedaSeleccionada;
+    }
+
+    public void setMonedaSeleccionada(Moneda m) {
+        this.monedaSeleccionada = m;
+
+    }
 }
+
+
+

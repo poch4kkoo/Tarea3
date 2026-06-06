@@ -10,10 +10,12 @@ import java.awt.event.MouseEvent;
 public class PanelExpendedor extends JPanel {
 
     private final Expendedor exp;
+    private final PanelPrincipal principal;
     private final Estante[] estantes;
 
-    public PanelExpendedor(Expendedor exp) {
+    public PanelExpendedor(Expendedor exp, PanelPrincipal principal) {
         this.exp = exp;
+        this.principal = principal;
         this.setLayout(new BorderLayout());
         setOpaque(false);
 
@@ -51,17 +53,17 @@ public class PanelExpendedor extends JPanel {
 
 
     private void abrirSelectorBebidas() {
+        Window ventanaPadre = SwingUtilities.getWindowAncestor(this);
+        JDialog dialogo = new JDialog(ventanaPadre, "Seleccione su producto", Dialog.ModalityType.APPLICATION_MODAL);
 
-        Window ventanaPrincipal = SwingUtilities.getWindowAncestor(this);
+        PanelComprador panelComprador = this.principal.getPanelComprador();
 
-        JDialog dialogo = new JDialog(ventanaPrincipal, "Seleccione su producto", Dialog.ModalityType.APPLICATION_MODAL);
-
-        // Instancia el panel con los botones que creamos anteriormente
-        PanelControles panelControles = new PanelControles(this.exp);
+        // Pasamos tanto el expendedor como el panel del comprador
+        PanelControles panelControles = new PanelControles(this.exp, panelComprador);
 
         dialogo.add(panelControles);
         dialogo.pack();
-        dialogo.setLocationRelativeTo(ventanaPrincipal);
+        dialogo.setLocationRelativeTo(ventanaPadre);
         dialogo.setVisible(true);
     }
 
