@@ -16,8 +16,8 @@ public class PanelComprador extends JPanel {
 
     private JButton botonConsumir;
 
-    //cambie:guarda la moneda seleccionada
-    public static Moneda monedaSeleccionada=null;
+    //guarda la moneda seleccionada
+    public static Moneda monedaSeleccionada = null;
 
     public PanelComprador(Comprador comprador, Expendedor expendedor) {
         super();
@@ -56,26 +56,26 @@ public class PanelComprador extends JPanel {
 
         add(botonConsumir, BorderLayout.SOUTH);
 
-        //cambie esto: prmite hacer clic en las monedas dibujadas
+        //detector de clics en las monedas
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (com.getMonedero() != null) {
-                    int xInicial=45;
-                    int yInicial=70;
-                    int columnas=5;
+                    int xInicial = 45;
+                    int yInicial = 70;
+                    int columnas = 5;
 
-                    for (int i=0;i<com.getMonedero().tamaño();i++) {
-                        Moneda m=com.getMonedero().getElementoEn(i);
-                        if (m==null) continue;
+                    for (int i = 0; i < com.getMonedero().tamaño(); i++) {
+                        Moneda m = com.getMonedero().getElementoEn(i);
+                        if (m == null) continue;
 
-                        int fila=i/columnas;
-                        int col=i%columnas;
-                        int x=xInicial+(col * 75);
-                        int y=yInicial+(fila * 75);
+                        int fila = i / columnas;
+                        int col = i % columnas;
+                        int x = xInicial + (col * 75);
+                        int y = yInicial + (fila * 75);
 
-                        //si el clic cae dentro de la moneda
-                        if (e.getX()>=x && e.getX()<=(x + 50) && e.getY()>=y && e.getY()<=(y + 50)) {
+                        //si el clic cae dentro del area de la moneda
+                        if (e.getX() >= x && e.getX() <= (x + 50) && e.getY() >= y && e.getY() <= (y + 50)) {
                             monedaSeleccionada = m;
                             repaint();
                             break;
@@ -141,8 +141,8 @@ public class PanelComprador extends JPanel {
                 int xFinal = x + offset;
                 int yFinal = y + offset;
 
-                //cambie esto: borde rojo si se hizo clic en esta moneda
-                if (m==monedaSeleccionada) {
+                // Borde rojo alrededor de la moneda seleccionada
+                if (m == monedaSeleccionada) {
                     graphics2D.setColor(Color.RED);
                     graphics2D.setStroke(new BasicStroke(3f));
                     graphics2D.drawOval(xFinal - 3, yFinal - 3, diametro + 6, diametro + 6);
@@ -176,9 +176,9 @@ public class PanelComprador extends JPanel {
         graphics2D.drawString("En la mano:", 40, 440);
 
         graphics2D.setColor(VGUI.CustomColor.BLANCO);
-        graphics2D.fillRoundRect(40, 460,160,180, VGUI.Borde.PEQUENO, VGUI.Borde.PEQUENO);
+        graphics2D.fillRoundRect(40, 460, 160, 180, VGUI.Borde.PEQUENO, VGUI.Borde.PEQUENO);
         graphics2D.setColor(VGUI.CustomColor.GRIS_OSCURO);
-        graphics2D.drawRoundRect(40, 460,160,180, VGUI.Borde.PEQUENO, VGUI.Borde.PEQUENO);
+        graphics2D.drawRoundRect(40, 460, 160, 180, VGUI.Borde.PEQUENO, VGUI.Borde.PEQUENO);
 
         Producto enMano = com.getProductoListo();
 

@@ -3,6 +3,7 @@ package org.GUI;
 import org.logica.Deposito;
 import org.logica.Expendedor;
 import org.logica.EnumProducto;
+import org.logica.Producto;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +16,8 @@ public class PanelExpendedor extends JPanel {
 
     public PanelExpendedor(Expendedor exp) {
         this.exp = exp;
-        //agregue layout nulo para posicionar botones, sin modificar los tamaños del panel
+
+        //layout nulo para añadir botones interactivos manteniendo el diseño original
         this.setLayout(null);
         setOpaque(false);
 
@@ -25,7 +27,7 @@ public class PanelExpendedor extends JPanel {
         setMinimumSize(tamano);
         setMaximumSize(tamano);
 
-        // Inicializamos el array de filas calculando su posición Y
+        //Inicializamos el array de filas calculando su posición Y
         this.estantes = new Estante[3];
 
         // Fila 0: CocaCola y Fanta
@@ -37,14 +39,12 @@ public class PanelExpendedor extends JPanel {
         // Fila 2: Dulces
         estantes[2] = new Estante(new Deposito[]{exp.getSuper8(), exp.getSnickers(), null, null}, 390);
 
-        //agregue
         crearBotonesCompra();
     }
 
-    //agregue metodo que genera la capacidad de hacer clics (botones)
     private void crearBotonesCompra() {
-        String[] nombres={"CocaCola","Fanta","Sprite","Super8","Snickers"};
-        EnumProducto[] productos={
+        String[] nombres = {"CocaCola", "Fanta", "Sprite", "Super8", "Snickers"};
+        EnumProducto[] productos = {
                 EnumProducto.COCA,
                 EnumProducto.FANTA,
                 EnumProducto.SPRITE,
@@ -52,11 +52,11 @@ public class PanelExpendedor extends JPanel {
                 EnumProducto.SNICKERS
         };
 
-        for (int i=0;i<nombres.length;i++) {
-            JButton btn=new JButton(nombres[i]);
-            btn.setBounds(465,150 +(i * 60),100,35); //se acomodan en el rectángulo gris
+        for (int i = 0; i < nombres.length; i++) {
+            JButton btn = new JButton(nombres[i]);
+            btn.setBounds(465, 150 + (i * 60), 100, 35);
 
-            final EnumProducto productoSeleccionado=productos[i];
+            final EnumProducto productoSeleccionado = productos[i];
 
             btn.addActionListener(new ActionListener() {
                 @Override
@@ -67,10 +67,14 @@ public class PanelExpendedor extends JPanel {
                     }
                     try {
                         exp.comprarProducto(PanelComprador.monedaSeleccionada, productoSeleccionado);
-                        PanelComprador.monedaSeleccionada = null;
-                        SwingUtilities.getWindowAncestor(PanelExpendedor.this).repaint();
+                        PanelComprador.monedaSeleccionada = null; // Reiniciar selección
+
+                        //refrescar toda la ventana para actualizar ambos paneles simultaneamente
+                        if (SwingUtilities.getWindowAncestor(PanelExpendedor.this) != null) {
+                            SwingUtilities.getWindowAncestor(PanelExpendedor.this).repaint();
+                        }
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Error: "+ex.getMessage());
+                        JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
                     }
                 }
             });
@@ -87,6 +91,13 @@ public class PanelExpendedor extends JPanel {
         return null;
     }
 
+    // metodo de ayuda alternativo para cuando se extrae directamente del deposito de productos
+    public Image obtenerImagenDeProducto(Producto p) {
+        if (p==null) return null;
+        String clase=p.getClass().getSimpleName().toLowerCase(); //
+        return Imagenes.get(clase);
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -98,6 +109,17 @@ public class PanelExpendedor extends JPanel {
         // Cada estante se dibuja a si mismo
         for (Estante estante : estantes) {
             estante.dibujar(g2d, this);
+        }
+
+        //dibujar producto en la salida(abajo)
+        if (exp.getDepProducto()!=null && !exp.getDepProducto().estaVacio()) {
+            //obtenemos el producto que esta esperando ser retirado
+            Producto comprado=exp.getDepProducto().getElementoEn(0);
+            Image imgProducto=obtenerImagenDeProducto(comprado);
+            if (imgProducto!=null) {
+                //se dibuja centrado dentro del compartimento gris azul
+                g2d.drawImage(imgProducto, 195, 510, 50, 55, this);
+            }
         }
     }
 
