@@ -47,8 +47,7 @@ public class PanelExpendedor extends JPanel {
                 int mouseX = e.getX();
                 int mouseY = e.getY();
 
-
-
+                // Clic para retirar producto del depósito
                 if (mouseX >= 115 && mouseX <= 325 && mouseY >= 495 && mouseY <= 580) {
                     if (exp.getDepProducto() != null && !exp.getDepProducto().estaVacio()) {
 
@@ -71,6 +70,7 @@ public class PanelExpendedor extends JPanel {
                     }
                 }
 
+                //clic opcional en la ranura para ingresar monedas manualmente
                 if (mouseX >= 480 && mouseX <= 550 && mouseY >= 50 && mouseY <= 70) {
                     if (PanelComprador.monedaSeleccionada != null) {
                         PanelPrincipal principal = (PanelPrincipal) SwingUtilities.getAncestorOfClass(PanelPrincipal.class, PanelExpendedor.this);
@@ -88,7 +88,6 @@ public class PanelExpendedor extends JPanel {
                             PanelComprador.monedaSeleccionada = null;
                             principal.repaint(); // reiniciamos la pantalla
                         }
-                        //  aqui puede ir una exception
                     }
                 }
             }
@@ -114,26 +113,41 @@ public class PanelExpendedor extends JPanel {
             btn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    try {
-                        // llamamos a la compra
-                        exp.comprarProducto(productoSeleccionado);
+                    PanelPrincipal principal = (PanelPrincipal) SwingUtilities.getAncestorOfClass(PanelPrincipal.class, PanelExpendedor.this);
 
-                        // Retornar el vuelto al comprador
-                        PanelPrincipal principal = (PanelPrincipal) SwingUtilities.getAncestorOfClass(PanelPrincipal.class, PanelExpendedor.this);
-                        if (principal != null) {
-                            Comprador comprador = principal.getPanelComprador().getCom();
+                    if (principal != null) {
+                        Comprador comprador = principal.getPanelComprador().getCom();
+
+                        //si hay una moneda seleccionada, la insertamos automa antes de comprar
+                        if (PanelComprador.monedaSeleccionada!=null) {
+                            exp.ingresarMoneda(PanelComprador.monedaSeleccionada);
+                            comprador.getMonedero().retirarElemento(PanelComprador.monedaSeleccionada);
+                            PanelComprador.monedaSeleccionada=null;//reiniciamos la selec
+                        }
+
+                        try {
+                            //llamamos a la compra
+                            exp.comprarProducto(productoSeleccionado);
+
+                            //reetornar el vuelto al comprador o la moneda si falla la compra
                             Moneda monedaVuelto;
-                            // Mienstras haya vuelto, el comprador lo recoge
+                            //mientras haya vuelto, el comprador lo recoge
                             while ((monedaVuelto = exp.getVuelto()) != null) {
                                 comprador.recogerVuelto(monedaVuelto);
                             }
-                        }
 
-                        if (SwingUtilities.getWindowAncestor(PanelExpendedor.this) != null) {
-                            SwingUtilities.getWindowAncestor(PanelExpendedor.this).repaint();
+                            principal.repaint(); //actualizamos la vista
+
+                        } catch (Exception ex) {
+                            JOptionPane.showMessageDialog(null,"Aviso: "+ex.getMessage());
+
+                            //si pasa un error como falta de stock intentamos devolver el dinero insertado
+                            Moneda monedaVuelto;
+                            while ((monedaVuelto=exp.getVuelto())!=null) {
+                                comprador.recogerVuelto(monedaVuelto);
+                            }
+                            principal.repaint();
                         }
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Aviso: " + ex.getMessage());
                     }
                 }
             });
