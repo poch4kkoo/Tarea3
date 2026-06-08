@@ -107,31 +107,31 @@ classDiagram
 
     %% DEFINICIONES DE CLASES LÓGICAS
     class Expendedor {
-        -Deposito<Producto> coca
-        -Deposito<Producto> sprite
-        -Deposito<Producto> fanta
-        -Deposito<Producto> super8
-        -Deposito<Producto> snickers
-        -Deposito<Moneda> monVu
-        -Deposito<Producto> depProducto
+        -Deposito coca
+        -Deposito sprite
+        -Deposito fanta
+        -Deposito super8
+        -Deposito snickers
+        -Deposito monVu
+        -Deposito depProducto
         -int saldo
         +Expendedor(num: int)
         +comprarProducto(TipoProducto: EnumProducto) void
         +ingresarMoneda(m: Moneda) void
         +getVuelto() Moneda
         +getSaldo() int
-        +getDepProducto() Deposito<Producto>
+        +getDepProducto() Deposito
     }
 
     class Comprador {
         -String tipo
-        -Deposito<Moneda> monedero
+        -Deposito monedero
         -Producto productoListo
         +Comprador()
         +escogerMoneda() Moneda
         +recogerVuelto(m: Moneda) void
         +recogerProducto(p: Producto) void
-        +getMonedero() Deposito<Moneda>
+        +getMonedero() Deposito
         +getProductoListo() Producto
         +getTipo() String
     }
@@ -179,7 +179,7 @@ classDiagram
         +consumir() String
     }
 
-    class Comparable<Moneda> { 
+    class Comparable { 
         <<interface>> 
         +compareTo(m: Moneda) int 
     } 
@@ -205,8 +205,8 @@ classDiagram
         +getValor() int
     }
 
-    class Deposito<T> {
-        -ArrayList<T> al
+    class Deposito {
+        -ArrayList al
         +addElemento(obj: T) void
         +getElemento() T
         +getElementoEn(index: int) T
