@@ -19,3 +19,68 @@ Pablo Sebastian Bascuñan Espina
 El **diagrama UML** se completo mediante las herramientas de git:
 
 ### Diagrama principal
+
+classDiagram
+    %% Paquete GUI
+    namespace org_GUI {
+        class Ventana
+        class PanelPrincipal
+        class PanelExpendedor
+        class PanelComprador
+        class Estante
+    }
+```mermaid
+    %% Paquete Lógica
+    namespace org_logica {
+        class Comprador
+        class Expendedor
+        class Deposito~T~
+        class Producto
+        class Bebida
+        class Dulce
+        class CocaCola
+        class Sprite
+        class Fanta
+        class Snickers
+        class Super8
+        class Moneda
+        class Moneda100
+        class Moneda500
+        class Moneda1000
+        class EnumProducto
+    }
+
+    %% Relaciones de la GUI
+    Ventana *-- PanelPrincipal : contiene
+    PanelPrincipal *-- PanelExpendedor : contiene
+    PanelPrincipal *-- PanelComprador : contiene
+    PanelExpendedor *-- Estante : contiene
+
+    %% Conexión entre GUI y Lógica
+    PanelExpendedor --> Expendedor : usa
+    PanelComprador --> Comprador : usa
+    PanelPrincipal --> Expendedor : instancia
+
+    %% Relaciones de la Lógica (Expendedor y Comprador)
+    Expendedor *-- Deposito~Producto~ : almacena productos
+    Expendedor *-- Deposito~Moneda~ : almacena monedas
+    Comprador *-- Deposito~Moneda~ : monedero
+    Comprador --> Producto : consume
+    
+    %% Herencia de Productos
+    Producto <|-- Bebida
+    Producto <|-- Dulce
+    Bebida <|-- CocaCola
+    Bebida <|-- Sprite
+    Bebida <|-- Fanta
+    Dulce <|-- Snickers
+    Dulce <|-- Super8
+
+    %% Herencia de Monedas
+    Moneda <|-- Moneda100
+    Moneda <|-- Moneda500
+    Moneda <|-- Moneda1000
+    
+    %% Dependencias
+    Expendedor ..> EnumProducto : catalogo
+```
