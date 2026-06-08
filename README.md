@@ -83,4 +83,4 @@ classDiagram
     
     %% Dependencias
     Expendedor ..> EnumProducto : catalogo
-```
+
