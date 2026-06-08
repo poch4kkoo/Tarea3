@@ -44,8 +44,10 @@ public class PanelComprador extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (com.getProductoListo() != null) {
-                    com.recogerProducto(com.getProductoListo());
-                    JOptionPane.showMessageDialog(null, "Consumiste tu producto");
+
+                    String msgConsumo = com.getProductoListo().consumir();
+                    com.recogerProducto(null);
+                    JOptionPane.showMessageDialog(null, "¡Consumiste tu " + msgConsumo + "!");
                     SwingUtilities.getWindowAncestor(PanelComprador.this).repaint();
                 }
                 else {
@@ -84,6 +86,22 @@ public class PanelComprador extends JPanel {
                 }
             }
         });
+    }
+
+    private Image obtenerImagenProducto(Producto p) {
+        if (p == null) {
+            return null;
+        }
+
+        String nombreTipo = p.getClass().getSimpleName().toLowerCase();
+
+        if (nombreTipo.contains("cocacola"))  return Imagenes.get("cocacola");
+        if (nombreTipo.contains("fanta"))  return Imagenes.get("fanta");
+        if (nombreTipo.contains("sprite"))  return Imagenes.get("sprite");
+        if (nombreTipo.contains("snickers"))  return Imagenes.get("snickers");
+        if (nombreTipo.contains("super8"))  return Imagenes.get("super8");
+
+        return null;
     }
 
     @Override
@@ -183,18 +201,22 @@ public class PanelComprador extends JPanel {
         Producto enMano = com.getProductoListo();
 
         if (enMano != null) {
-            graphics2D.setColor(VGUI.CustomColor.ROSA);
-            graphics2D.fillRoundRect(80, 500, 80, 110, 10, 10);
-            graphics2D.setColor(VGUI.CustomColor.NEGRO);
-            graphics2D.drawRoundRect(80, 500, 80, 110, 10, 10);
 
-            graphics2D.setColor(VGUI.CustomColor.BLANCO);
-            graphics2D.setFont(new Font(VGUI.FONT, Font.BOLD, VGUI.TamanoFuente.OCULTO));
-            graphics2D.drawString("N° :" + enMano.getSerie(), 100, 540);
+            Image imgProducto = obtenerImagenProducto(enMano);
+
+            if(imgProducto != null) {
+                graphics2D.drawImage(imgProducto, 85, 495,70,90,this);
+            }
+
         } else {
             graphics2D.setColor(Color.LIGHT_GRAY);
             graphics2D.setFont(new Font(VGUI.FONT, Font.ITALIC, VGUI.TamanoFuente.CUERPO));
             graphics2D.drawString("Mano vacia", 88, 550);
         }
     }
+
+    public Comprador getCom() {
+        return com;
+    }
+
 }

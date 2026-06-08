@@ -8,6 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.logica.Comprador;
+
 
 public class PanelExpendedor extends JPanel {
 
@@ -40,6 +42,37 @@ public class PanelExpendedor extends JPanel {
         estantes[2] = new Estante(new Deposito[]{exp.getSuper8(), exp.getSnickers(), null, null}, 390);
 
         crearBotonesCompra();
+
+        this.addMouseListener(new java.awt.event.MouseAdapter() {
+
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                int mouseX = e.getX();
+                int mouseY = e.getY();
+
+                if (mouseX >= 115 && mouseX <= 325 && mouseY >= 495 && mouseY <= 580) {
+                    if (exp.getDepProducto() != null && !exp.getDepProducto().estaVacio()) {
+
+                        PanelPrincipal principal = (PanelPrincipal) SwingUtilities.getAncestorOfClass(PanelPrincipal.class, PanelExpendedor.this);
+
+                        if (principal != null) {
+
+                            Comprador comprador = principal.getPanelComprador().getCom();
+
+                            if (comprador.getProductoListo() != null) {
+                                JOptionPane.showMessageDialog(null, "¡Ya tienes un producto en la mano! Consumelo antes de retirar otro", "Mano ocupada", JOptionPane.WARNING_MESSAGE);
+                                return;
+                            }
+
+                            Producto productoSacado = exp.getProducto();
+                            principal.getPanelComprador().getCom().recogerProducto(productoSacado);
+                            principal.repaint();
+                            JOptionPane.showMessageDialog(null, "Se ha retirado el producto de la maquina. Ahora esta en su mano. ");
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void crearBotonesCompra() {
