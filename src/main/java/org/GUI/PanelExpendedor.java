@@ -1,14 +1,11 @@
 package org.GUI;
 
-import org.logica.Deposito;
-import org.logica.Expendedor;
-import org.logica.EnumProducto;
-import org.logica.Producto;
+import org.logica.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.logica.Comprador;
 
 
 public class PanelExpendedor extends JPanel {
@@ -50,6 +47,8 @@ public class PanelExpendedor extends JPanel {
                 int mouseX = e.getX();
                 int mouseY = e.getY();
 
+
+
                 if (mouseX >= 115 && mouseX <= 325 && mouseY >= 495 && mouseY <= 580) {
                     if (exp.getDepProducto() != null && !exp.getDepProducto().estaVacio()) {
 
@@ -69,6 +68,27 @@ public class PanelExpendedor extends JPanel {
                             principal.repaint();
                             JOptionPane.showMessageDialog(null, "Se ha retirado el producto de la maquina. Ahora esta en su mano. ");
                         }
+                    }
+                }
+
+                if (mouseX >= 480 && mouseX <= 550 && mouseY >= 50 && mouseY <= 70) {
+                    if (PanelComprador.monedaSeleccionada != null) {
+                        PanelPrincipal principal = (PanelPrincipal) SwingUtilities.getAncestorOfClass(PanelPrincipal.class, PanelExpendedor.this);
+
+                        if (principal != null) {
+                            Comprador comprador = principal.getPanelComprador().getCom();
+
+                            // Ingresamos la moneda
+                            exp.ingresarMoneda(PanelComprador.monedaSeleccionada);
+
+                            // Eliminamos la moneda del monedero del comprador
+                            comprador.getMonedero().retirarElemento(PanelComprador.monedaSeleccionada);
+
+                            // reinciamos monedaSeleccionada para preparar la siguiente
+                            PanelComprador.monedaSeleccionada = null;
+                            principal.repaint(); // reiniciamos la pantalla
+                        }
+                        //  aqui puede ir una exception
                     }
                 }
             }
@@ -94,20 +114,26 @@ public class PanelExpendedor extends JPanel {
             btn.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (PanelComprador.monedaSeleccionada == null) {
-                        JOptionPane.showMessageDialog(null, "Selecciona una moneda primero.");
-                        return;
-                    }
                     try {
-                        exp.comprarProducto(PanelComprador.monedaSeleccionada, productoSeleccionado);
-                        PanelComprador.monedaSeleccionada = null; // Reiniciar selección
+                        // llamamos a la compra
+                        exp.comprarProducto(productoSeleccionado);
 
-                        //refrescar toda la ventana para actualizar ambos paneles simultaneamente
+                        // Retornar el vuelto al comprador
+                        PanelPrincipal principal = (PanelPrincipal) SwingUtilities.getAncestorOfClass(PanelPrincipal.class, PanelExpendedor.this);
+                        if (principal != null) {
+                            Comprador comprador = principal.getPanelComprador().getCom();
+                            Moneda monedaVuelto;
+                            // Mienstras haya vuelto, el comprador lo recoge
+                            while ((monedaVuelto = exp.getVuelto()) != null) {
+                                comprador.recogerVuelto(monedaVuelto);
+                            }
+                        }
+
                         if (SwingUtilities.getWindowAncestor(PanelExpendedor.this) != null) {
                             SwingUtilities.getWindowAncestor(PanelExpendedor.this).repaint();
                         }
                     } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+                        JOptionPane.showMessageDialog(null, "Aviso: " + ex.getMessage());
                     }
                 }
             });
@@ -175,6 +201,17 @@ public class PanelExpendedor extends JPanel {
         // Pantalla del Expendedor
         g2d.setColor(VGUI.CustomColor.CIAN);
         g2d.fillRect(460, 100, 110, 30);
+
+        // Saldo en la pantalla CIAN
+        g2d.setColor(Color.BLACK);
+        g2d.setFont(new Font(VGUI.FONT, Font.BOLD, VGUI.TamanoFuente.CUERPO));
+        g2d.drawString("Saldo: $" + exp.getSaldo(), 465, 120);
+
+        // Ranura para monedas
+        g2d.setColor(Color.DARK_GRAY);
+        g2d.fillRoundRect(480, 50, 70, 20, 10, 10);
+        g2d.setColor(Color.BLACK);
+        g2d.fillRoundRect(485, 55, 60, 10, 5, 5);   // Ranura monedas
 
         // INTERIOR EXPENDEDOR
         g2d.setColor(VGUI.CustomColor.GRIS_AZUL);

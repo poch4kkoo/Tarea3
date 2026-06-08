@@ -17,14 +17,14 @@ public class PanelPrincipal extends JPanel {
         this.setSize(600, 800);
         this.setLayout(new GridBagLayout());
 
-        llenarExp = new Expendedor(9);
+        llenarExp = new Expendedor(3);
         exp = new PanelExpendedor(llenarExp);
         com = new PanelComprador(new Comprador(), llenarExp);
 
 
         this.setBackground(Color.white);
 
-        // Agregamos el componente al panel de forma real
+        // Agregamos el componente al panel
         this.add(exp);
         this.add(com);
     }

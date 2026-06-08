@@ -18,6 +18,9 @@ public class Expendedor {
 
     private Deposito<Producto> DepProducto;
 
+    private int saldo = 0;
+    private Deposito<Moneda> pagoTemporal = new Deposito<>();
+
     private int series = 1000;
 
     /**
@@ -49,69 +52,68 @@ public class Expendedor {
     /**
      * Metodo que procesa la compra de un producto. Valida la moneda y el stock.
      *
-     * @param m La moneda utilizada para el pago.
      * @param TipoProducto El tipo de producto solicitado (EnumProducto).
      * @throws NoHayProductoException Si el deposito  del producto esta vacio.
      * @throws PagoInsuficienteException Si el valor de la moneda es menor que el valor del producto.
      * @throws PagoIncorrectoException Si se intenta pagar con una moneda nula.
      */
-    public void comprarProducto(Moneda m, EnumProducto TipoProducto)
-            throws NoHayProductoException, PagoInsuficienteException, PagoIncorrectoException {
 
-        // Validar que se ha ingresado una moneda
-        if (m == null){
-            throw new PagoIncorrectoException("el pago es incorrecto, ingresaste para pagar algo null");
-        }
+    // Se elimina el parámetro Moneda m
+    public void comprarProducto(EnumProducto TipoProducto)
+            throws NoHayProductoException, PagoInsuficienteException {
 
         int precio = TipoProducto.getPrecio();
 
-
-        //Validar que el monto de la moneda alcance para el producto.
-        if (m.getValor() < precio){
-            monVu.addElemento(m);
-            throw new PagoInsuficienteException("pago insuficiente, no te alcanza");
+        // Excepcion en caso de que el saldo alcance
+        if (saldo < precio){
+            throw new PagoInsuficienteException("Saldo insuficiente. Necesitas $" + precio);
         }
 
-        //No perimite la compra hasta que se haya retirado el producto anterior del deposito del expendedor.
+        // No permite compra si no recogiste el producto
         if (!DepProducto.estaVacio()) {
-            monVu.addElemento(m);
             return;
         }
 
         Producto p = null;
 
-        //Seleccion manual del deposito segun el tipo de producto solicitado.
         if (TipoProducto == EnumProducto.COCA) p = coca.getElemento();
         else if (TipoProducto == EnumProducto.SPRITE) p = sprite.getElemento();
         else if (TipoProducto == EnumProducto.FANTA) p = fanta.getElemento();
         else if (TipoProducto == EnumProducto.SNICKERS) p = snickers.getElemento();
         else if (TipoProducto == EnumProducto.SUPER8) p = super8.getElemento();
 
-        //Si se encontro el producto en el deposito.
         if (p != null) {
-            int vuelto = m.getValor() - precio;
+            int vuelto = saldo - precio;
 
-            //Generar vuelto en monedas de $500.
+            // Mueve las monedas ingresadas al depósito interno de la máquina
+            Moneda mt;
+            while ((mt = pagoTemporal.getElemento()) != null) {
+                DepMonedas.addElemento(mt);
+            }
+            saldo = 0; // Reiniciamos el saldo actual
+
+            // Generar vuelto
             while (vuelto >= 500) {
                 monVu.addElemento(new Moneda500(series++));
                 vuelto -= 500;
             }
-
-            //Generar vuelto en monedas de $100.
             while (vuelto >= 100) {
                 monVu.addElemento(new Moneda100(series++));
                 vuelto -= 100;
             }
 
-            DepMonedas.addElemento(m);
             DepProducto.addElemento(p);
 
         } else {
-            monVu.addElemento(m);
-            throw new NoHayProductoException("Agotado");
+            throw new NoHayProductoException("Producto Agotado");
         }
+    }
 
-
+    public void ingresarMoneda(Moneda m) {
+        if (m != null) {
+            pagoTemporal.addElemento(m);
+            saldo += m.getValor();
+        }
     }
 
     /**
@@ -131,7 +133,10 @@ public class Expendedor {
         return DepProducto.getElemento();
     }
 
+    public int getSaldo() { return saldo; }
+
     //GETTERS
+
     public Deposito<Bebida> getCoca() {
         return coca;
     }

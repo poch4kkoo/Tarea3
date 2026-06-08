@@ -37,6 +37,10 @@ public class Deposito<T> {
         return al.remove(0);
     }
 
+    public void retirarElemento(T elemento){
+        al.remove(elemento);
+    }
+
     public boolean estaVacio() {
         return al.isEmpty();
     }
