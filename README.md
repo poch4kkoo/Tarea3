@@ -19,36 +19,37 @@ Pablo Sebastian Bascuñan Espina
 El **diagrama UML** se completo mediante las herramientas de git:
 
 ### Diagrama principal
+```mermaid
+
 
 classDiagram
-    %% Paquete GUI
-    namespace org_GUI {
-        class Ventana
-        class PanelPrincipal
-        class PanelExpendedor
-        class PanelComprador
-        class Estante
-    }
-```mermaid
-    %% Paquete Lógica
-    namespace org_logica {
-        class Comprador
-        class Expendedor
-        class Deposito~T~
-        class Producto
-        class Bebida
-        class Dulce
-        class CocaCola
-        class Sprite
-        class Fanta
-        class Snickers
-        class Super8
-        class Moneda
-        class Moneda100
-        class Moneda500
-        class Moneda1000
-        class EnumProducto
-    }
+    %% Definición de las clases y grupos
+    subgraph Paquete GUI
+        Ventana
+        PanelPrincipal
+        PanelExpendedor
+        PanelComprador
+        Estante
+    end
+
+    subgraph Paquete Logica
+        Comprador
+        Expendedor
+        Deposito
+        Producto
+        Bebida
+        Dulce
+        CocaCola
+        Sprite
+        Fanta
+        Snickers
+        Super8
+        Moneda
+        Moneda100
+        Moneda500
+        Moneda1000
+        EnumProducto
+    end
 
     %% Relaciones de la GUI
     Ventana *-- PanelPrincipal : contiene
@@ -61,11 +62,11 @@ classDiagram
     PanelComprador --> Comprador : usa
     PanelPrincipal --> Expendedor : instancia
 
-    %% Relaciones de la Lógica (Expendedor y Comprador)
-    Expendedor *-- Deposito~Producto~ : almacena productos
-    Expendedor *-- Deposito~Moneda~ : almacena monedas
-    Comprador *-- Deposito~Moneda~ : monedero
+    %% Relaciones de la Lógica
+    Expendedor *-- Deposito : almacena
+    Comprador *-- Deposito : monedero
     Comprador --> Producto : consume
+    Expendedor ..> EnumProducto : catalogo
     
     %% Herencia de Productos
     Producto <|-- Bebida
@@ -80,7 +81,3 @@ classDiagram
     Moneda <|-- Moneda100
     Moneda <|-- Moneda500
     Moneda <|-- Moneda1000
-    
-    %% Dependencias
-    Expendedor ..> EnumProducto : catalogo
-
