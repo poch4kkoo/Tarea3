@@ -19,7 +19,7 @@ public class PanelPrincipal extends JPanel {
 
         llenarExp = new Expendedor(3);
         exp = new PanelExpendedor(llenarExp);
-        com = new PanelComprador(new Comprador(), llenarExp);
+        com = new PanelComprador(new Comprador());
 
 
         this.setBackground(Color.white);

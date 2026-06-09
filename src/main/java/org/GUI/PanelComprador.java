@@ -12,18 +12,13 @@ import org.logica.*;
 public class PanelComprador extends JPanel {
 
     private Comprador com;
-    private Expendedor exp;
-
     private JButton botonConsumir;
-
-    //guarda la moneda seleccionada
     public static Moneda monedaSeleccionada = null;
 
-    public PanelComprador(Comprador comprador, Expendedor expendedor) {
+    public PanelComprador(Comprador comprador) {
         super();
 
         com = comprador;
-        exp = expendedor;
 
         Dimension tamano = new Dimension(450, 780);
         setPreferredSize(tamano);
