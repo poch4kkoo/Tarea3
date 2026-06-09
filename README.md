@@ -8,11 +8,11 @@ Pablo Sebastian Bascuñan Espina
 1. Clonar el repositorio.
 2. Abrir el proyecto en un IDE (intelliJ IDEA recomendado).
 3. Configurar el SDK (java 17 o superior).
-4. Ejecutar la clase "Main" ubicada en "src/main/java/Tarea2/Main.java".
+4. Ejecutar la clase "Main" ubicada en "src/main/java/org/Main.java".
 
 ### Funcionamiento:
 
-1.La maquina expendedora puede recibir las monedas presionandolas o insertandolas en la ranura de una en una para realizar la comprar.
+1.La maquina expendedora puede recibir las monedas presionandolas e insertandolas en la ranura de una en una para realizar la comprar.
 2.Posterior a la seleccion del producto si el saldo fue suficiente, se entregara el producto en la ranura para que el cliente pueda recoger la compra.
 3.Luego de que recoja la compra, el cliente puede consumir su producto o hacer otra compra.
 
@@ -20,11 +20,26 @@ El **diagrama UML** se completo mediante las herramientas de git:
 
 ### Diagrama principal
 ```mermaid
-
 classDiagram
     direction TB
 
-    %% GRUPO INTERFAZ GRÁFICA (GUI)
+    %% Clases Java base
+    class JFrame { <<Java Class>> }
+    class JPanel { <<Java Class>> }
+    class RuntimeException { <<Java Class>> }
+
+    %% Herencias Java
+    JFrame <|-- Ventana
+    JPanel <|-- PanelPrincipal
+    JPanel <|-- PanelExpendedor
+    JPanel <|-- PanelComprador
+
+    RuntimeException <|-- NoHayProductoException
+    RuntimeException <|-- PagoInsuficienteException
+    RuntimeException <|-- PagoIncorrectoException
+
+
+    %% GUI
     subgraph Interfaz_Grafica
         Ventana *-- PanelPrincipal : posee
         PanelPrincipal *-- PanelExpendedor : posee
@@ -32,15 +47,13 @@ classDiagram
         PanelExpendedor *-- Estante : posee
     end
 
-    %% GRUPO SISTEMA CENTRAL LÓGICO
     subgraph Sistema_Logico
         PanelPrincipal --> Expendedor : instancia y conecta
         PanelPrincipal --> Comprador : instancia y conecta
-        PanelExpendedor --> Expendedor : interactua / consulta
-        PanelComprador --> Comprador : interactua / consulta
+        PanelExpendedor --> Expendedor : interactua
+        PanelComprador --> Comprador : interactua
     end
 
-    %% GRUPO PRODUCTOS
     subgraph Jerarquia_Productos
         Producto <|-- Bebida
         Producto <|-- Dulce
@@ -51,21 +64,22 @@ classDiagram
         Dulce <|-- Super8
     end
 
-    %% GRUPO MONEDAS
     subgraph Jerarquia_Monedas
+        Comparable <|.. Moneda : implementa
         Moneda <|-- Moneda100
         Moneda <|-- Moneda500
         Moneda <|-- Moneda1000
-        Comparable <|.. Moneda : implementa 
     end
 
-    %% RELACIONES ESTRUCTURALES LÓGICAS
     Expendedor *-- Deposito : posee multiples
     Comprador *-- Deposito : posee monedero
     Deposito ..> Producto : almacena
     Deposito ..> Moneda : almacena
+    Expendedor ..> EnumProducto : usa
+    PanelExpendedor ..> EnumProducto : usa
+    Expendedor ..> NoHayProductoException : throws
+    Expendedor ..> PagoInsuficienteException : throws
 
-    %% DEFINICIONES CLASES GUI (SWING)
     class Ventana {
         -PanelPrincipal pri
         +Ventana()
@@ -82,30 +96,30 @@ classDiagram
     class PanelExpendedor {
         -Expendedor exp
         -Estante[] estantes
-        +PanelExpendedor(exp: Expendedor)
+        +PanelExpendedor(exp Expendedor)
         -crearBotonesCompra() void
-        +obtenerImagen(deposito: Deposito) Image
-        +obtenerImagenDeProducto(p: Producto) Image
+        +obtenerImagen(deposito Deposito) Image
+        +obtenerImagenDeProducto(p Producto) Image
+        +paintComponent(g Graphics) void
+        -dibujarMuebleEstructura(g2d Graphics2D) void
     }
 
     class PanelComprador {
         -Comprador com
-        -Expendedor exp
         -JButton botonConsumir
         +Moneda monedaSeleccionada$
-        +PanelComprador(comprador: Comprador, expendedor: Expendedor)
-        -obtenerImagenProducto(p: Producto) Image
+        +PanelComprador(comprador Comprador)
+        -obtenerImagenProducto(p Producto) Image
         +getCom() Comprador
     }
 
     class Estante {
         -Deposito[] depositos
-        -int posY
-        +Estante(depositos: Deposito[], posY: int)
-        +dibujar(g2d: Graphics2D, panel: JPanel) void
+        -int yEstante
+        +Estante(depositos Deposito[], yEstante int)
+        +dibujar(g2d Graphics2D, panel PanelExpendedor) void
     }
 
-    %% DEFINICIONES DE CLASES LÓGICAS
     class Expendedor {
         -Deposito coca
         -Deposito sprite
@@ -113,13 +127,23 @@ classDiagram
         -Deposito super8
         -Deposito snickers
         -Deposito monVu
+        -Deposito DepMonedas
         -Deposito depProducto
+        -Deposito pagoTemporal
         -int saldo
-        +Expendedor(num: int)
-        +comprarProducto(TipoProducto: EnumProducto) void
-        +ingresarMoneda(m: Moneda) void
+        -int series
+        +Expendedor(num int)
+        +comprarProducto(tipo EnumProducto) void
+        +ingresarMoneda(m Moneda) void
+        +rellenarVacios() void
         +getVuelto() Moneda
+        +getProducto() Producto
         +getSaldo() int
+        +getCoca Deposito
+        +getFanta Deposito
+        +getSprite Deposito
+        +getSnickers Deposito
+        +getSuper8 Deposito
         +getDepProducto() Deposito
     }
 
@@ -128,9 +152,9 @@ classDiagram
         -Deposito monedero
         -Producto productoListo
         +Comprador()
-        +escogerMoneda() Moneda
-        +recogerVuelto(m: Moneda) void
-        +recogerProducto(p: Producto) void
+        -ordenarMonedero() void
+        +recogerVuelto(m Moneda) void
+        +recogerProducto(p Producto) void
         +getMonedero() Deposito
         +getProductoListo() Producto
         +getTipo() String
@@ -139,79 +163,83 @@ classDiagram
     class Producto {
         <<abstract>>
         -int serie
-        +Producto(serie: int)
+        +Producto(serie int)
         +consumir()* String
         +getSerie() int
     }
 
     class Bebida {
         <<abstract>>
-        +Bebida(s: int)
+        +Bebida(s int)
     }
 
     class Dulce {
         <<abstract>>
-        +Dulce(s: int)
+        +Dulce(s int)
     }
 
     class CocaCola {
-        +CocaCola(s: int)
+        +CocaCola(s int)
         +consumir() String
     }
 
     class Sprite {
-        +Sprite(s: int)
+        +Sprite(s int)
         +consumir() String
     }
 
     class Fanta {
-        +Fanta(s: int)
+        +Fanta(s int)
         +consumir() String
     }
 
     class Snickers {
-        +Snickers(s: int)
+        +Snickers(s int)
         +consumir() String
     }
 
     class Super8 {
-        +Super8(s: int)
+        +Super8(s int)
         +consumir() String
     }
 
-    class Comparable { 
-        <<interface>> 
-        +compareTo(m: Moneda) int 
-    } 
+    class Comparable {
+        <<interface>>
+        +compareTo(m Moneda) int
+    }
 
     class Moneda {
         <<abstract>>
         -int serie
-        +Moneda(serie: int)
+        +Moneda(s int)
         +getValor()* int
         +getSerie() int
-        +compareTo(m: Moneda) int
+        +compareTo(m Moneda) int
     }
+
     class Moneda100 {
-        +Moneda100(serie: int)
-        +getValor() int
-    }
-    class Moneda500 {
-        +Moneda500(serie: int)
-        +getValor() int
-    }
-    class Moneda1000 {
-        +Moneda1000(serie: int)
+        +Moneda100(s int)
         +getValor() int
     }
 
-    class Deposito {
-        -ArrayList al
-        +addElemento(obj: T) void
+    class Moneda500 {
+        +Moneda500(s int)
+        +getValor() int
+    }
+
+    class Moneda1000 {
+        +Moneda1000(s int)
+        +getValor() int
+    }
+
+    class Deposito~T~ {
+        -ArrayList~T~ al
+        +Deposito()
+        +addElemento(obj T) void
         +getElemento() T
-        +getElementoEn(index: int) T
-        +retirarElemento(obj: T) void
-        +tamaño() int
+        +getElementoEn(index int) T
+        +retirarElemento(obj T) void
+        +tamano() int
         +estaVacio() boolean
     }
 
@@ -226,15 +254,12 @@ classDiagram
         +getPrecio() int
     }
 
-    %% EXCEPCIONES Y DEPENDENCIAS
-    class RuntimeException { <<Java Class>> }
-    
-    RuntimeException <|-- PagoIncorrectoException
+    class RuntimeException {
+        <<Java Class>>
+    }
+
     RuntimeException <|-- NoHayProductoException
     RuntimeException <|-- PagoInsuficienteException
+    RuntimeException <|-- PagoIncorrectoException
+```
 
-    Expendedor ..> EnumProducto : usa
-    PanelExpendedor ..> EnumProducto : usa
-    Expendedor ..> PagoIncorrectoException : throws
-    Expendedor ..> NoHayProductoException : throws
-    Expendedor ..> PagoInsuficienteException : throws

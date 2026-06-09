@@ -195,14 +195,6 @@ public class Expendedor {
         return super8;
     }
 
-    public Deposito<Moneda> getDepMonedas() {
-        return DepMonedas;
-    }
-
-    public Deposito<Moneda> getMonVu() {
-        return monVu;
-    }
-
     public Deposito<Producto> getDepProducto() {
         return DepProducto;
     }
