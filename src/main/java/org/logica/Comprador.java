@@ -1,5 +1,7 @@
 package org.logica;
 
+import java.util.ArrayList;
+
 /**
  *
  * Esta clase simula ser un comprador, el cual puede elegir un producto e ingresar
@@ -32,27 +34,46 @@ public class Comprador {
         monedero = new Deposito<>();
         productoListo = null;
 
-        monedero.addElemento(new Moneda100(1));
-        monedero.addElemento(new Moneda100(2));
-        monedero.addElemento(new Moneda100(3));
-        monedero.addElemento(new Moneda100(4));
-        monedero.addElemento(new Moneda100(5));
+        monedero.addElemento(new Moneda1000(1));
+        monedero.addElemento(new Moneda1000(2));
+        monedero.addElemento(new Moneda1000(3));
+        monedero.addElemento(new Moneda500(4));
+        monedero.addElemento(new Moneda500(5));
         monedero.addElemento(new Moneda500(6));
-        monedero.addElemento(new Moneda500(7));
-        monedero.addElemento(new Moneda500(8));
-        monedero.addElemento(new Moneda1000(9));
-        monedero.addElemento(new Moneda1000(10));
-        monedero.addElemento(new Moneda1000(11));
+        monedero.addElemento(new Moneda100(7));
+        monedero.addElemento(new Moneda100(8));
+        monedero.addElemento(new Moneda100(9));
+        monedero.addElemento(new Moneda100(10));
+        monedero.addElemento(new Moneda100(11));
 
     }
 
-    public Moneda escogerMoneda() {
-        return monedero.getElemento();
+    private void ordenarMonedero() {
+        if (this.monedero == null || this.monedero.estaVacio()) {
+            return;
+        }
+
+        java.util.ArrayList<Moneda> listaTemporal = new java.util.ArrayList<>();
+        while (!this.monedero.estaVacio()) {
+            listaTemporal.add(this.monedero.getElemento());
+        }
+
+        java.util.Collections.sort(listaTemporal, new java.util.Comparator<Moneda>() {
+            @Override
+            public int compare(Moneda m1, Moneda m2) {
+                return Integer.compare(m2.getValor(), m1.getValor());
+            }
+        });
+
+        for (Moneda m : listaTemporal) {
+            this.monedero.addElemento(m);
+        }
     }
 
     public void recogerVuelto(Moneda m) {
         if (m != null) {
             monedero.addElemento(m);
+            ordenarMonedero();
         }
     }
 
