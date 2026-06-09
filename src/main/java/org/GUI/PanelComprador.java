@@ -25,7 +25,7 @@ public class PanelComprador extends JPanel {
         com = comprador;
         exp = expendedor;
 
-        Dimension tamano = new Dimension(450, 800);
+        Dimension tamano = new Dimension(450, 780);
         setPreferredSize(tamano);
         setMinimumSize(tamano);
         setMaximumSize(tamano);

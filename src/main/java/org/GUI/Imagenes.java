@@ -17,6 +17,7 @@ public class Imagenes {
             imagenes.put("super8", ImageIO.read(Imagenes.class.getResource("/Productos/super8.png")));
             imagenes.put("snickers", ImageIO.read(Imagenes.class.getResource("/Productos/snickers.png")));
             imagenes.put("resorte", ImageIO.read(Imagenes.class.getResource("/Extras/resorte.png")));
+            imagenes.put("ranura", ImageIO.read(Imagenes.class.getResource("/Extras/ranura.png")));
             System.out.println("Imágenes cargadas exitosamente.");
         } catch (IOException e) {
             System.err.println("ERROR: No se pudieron cargar las imágenes.");
