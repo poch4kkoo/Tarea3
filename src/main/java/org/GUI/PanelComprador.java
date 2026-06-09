@@ -86,6 +86,50 @@ public class PanelComprador extends JPanel {
                 }
             }
         });
+
+        addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+
+            @Override
+            public void mouseMoved(java.awt.event.MouseEvent e) {
+                int mouseX = e.getX();
+                int mouseY = e.getY();
+
+                boolean sobreMoneda = false;
+                int totalMonedas = com.getMonedero().tamaño();
+
+                int diametro = 55;
+                int margenX = 40;
+                int margenY = 50;
+                int espacio = 20;
+                int columnas = 5;
+
+                for (int i = 0; i < totalMonedas; i++) {
+                    int col = i % columnas;
+                    int fila = i / columnas;
+
+                    int xFinal = margenX + col * (diametro + espacio);
+                    int yFinal = margenY + fila * (diametro + espacio);
+
+                    int centroX = xFinal + diametro /2;
+                    int centroY = yFinal + diametro /2;
+                    double distancia = Math.sqrt(Math.pow(mouseX - centroX, 2) + Math.pow(mouseY - centroY, 2));
+
+                    if (distancia <= 40) {
+                        Moneda m = com.getMonedero().getElementoEn(i);
+                        if (m != null) {
+                            // Asignamos el texto que flotará al lado del cursor
+                            setToolTipText("N° serie: " + m.getSerie());
+                            sobreMoneda = true;
+                        }
+                        break;
+                    }
+                }
+
+                if (!sobreMoneda) {
+                    setToolTipText(null);
+                }
+            }
+        });
     }
 
     private Image obtenerImagenProducto(Producto p) {
