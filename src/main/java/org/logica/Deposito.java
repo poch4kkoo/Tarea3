@@ -45,7 +45,7 @@ public class Deposito<T> {
         return al.isEmpty();
     }
 
-    public int tamaño() {
+    public int tamano() {
         return al.size();
     }
 

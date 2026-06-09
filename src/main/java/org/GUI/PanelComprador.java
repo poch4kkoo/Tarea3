@@ -67,7 +67,7 @@ public class PanelComprador extends JPanel {
                     int yInicial = 70;
                     int columnas = 5;
 
-                    for (int i = 0; i < com.getMonedero().tamaño(); i++) {
+                    for (int i = 0; i < com.getMonedero().tamano(); i++) {
                         Moneda m = com.getMonedero().getElementoEn(i);
                         if (m == null) continue;
 
@@ -95,7 +95,7 @@ public class PanelComprador extends JPanel {
                 int mouseY = e.getY();
 
                 boolean sobreMoneda = false;
-                int totalMonedas = com.getMonedero().tamaño();
+                int totalMonedas = com.getMonedero().tamano();
 
                 int diametro = 55;
                 int margenX = 40;
@@ -173,7 +173,7 @@ public class PanelComprador extends JPanel {
 
         if (com.getMonedero() != null) {
 
-            int totalMonedas = com.getMonedero().tamaño();
+            int totalMonedas = com.getMonedero().tamano();
 
             for (int i = 0; i < totalMonedas; i++) {
 

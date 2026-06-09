@@ -37,7 +37,7 @@ public class Estante {
         int yDinamico = yEstante;
 
         if (deposito != null) {
-            int cantidad = deposito.tamaño();
+            int cantidad = deposito.tamano();
             // Le pedimos al panel que resuelva la imagen según el depósito
             Image imgProducto = panel.obtenerImagen(deposito);
 
