@@ -42,9 +42,10 @@ public class Estante {
             Image imgProducto = panel.obtenerImagen(deposito);
 
             // Dibujar stock (máximo 5 elementos visuales para no saturar)
-            int limite = Math.min(cantidad, 5);
-            for (int j = 0; j < limite; j++) {
-                g2d.drawImage(imgProducto, xDinamico, yDinamico - 80, 64, 80, panel);
+            for (int j = 0; j < 5; j++) {
+                if (cantidad > j) {
+                    g2d.drawImage(imgProducto, xDinamico, yDinamico - 80, 64, 80, panel);
+                }
                 g2d.drawImage(imgResorte, xDinamico + 10, yDinamico - 30, 40, 40, panel);
 
                 yDinamico += 1;

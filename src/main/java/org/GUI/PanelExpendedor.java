@@ -80,7 +80,7 @@ public class PanelExpendedor extends JPanel {
 
 
                 //clic para ingresar monedas en la ranura
-                if (mouseX >= 480 && mouseX <= 550 && mouseY >= 140 && mouseY <= 220) {
+                if (mouseX >= 445 && mouseX <= 585 && mouseY >= 110 && mouseY <= 230) {
                     if (PanelComprador.monedaSeleccionada != null) {
                         PanelPrincipal principal = (PanelPrincipal) SwingUtilities.getAncestorOfClass(PanelPrincipal.class, PanelExpendedor.this);
 
@@ -223,16 +223,16 @@ public class PanelExpendedor extends JPanel {
 
         // Pantalla del Expendedor
         g2d.setColor(VGUI.CustomColor.CIAN);
-        g2d.fillRect(460, 100, 110, 30);
+        g2d.fillRect(460, 70, 110, 30);
 
         // Saldo en la pantalla CIAN
         g2d.setColor(Color.BLACK);
         g2d.setFont(new Font(VGUI.FONT, Font.BOLD, VGUI.TamanoFuente.CUERPO));
-        g2d.drawString("Saldo: $" + exp.getSaldo(), 465, 120);
+        g2d.drawString("Saldo: $" + exp.getSaldo(), 465, 90);
 
         // Ranura para monedas
         Image imgRanura = Imagenes.get("ranura");
-        g2d.drawImage(imgRanura, 465, 140, 100, 80, this);
+        g2d.drawImage(imgRanura, 445, 110, 140, 120, this);
 
         // INTERIOR EXPENDEDOR
         g2d.setColor(VGUI.CustomColor.GRIS_AZUL);
