@@ -70,6 +70,15 @@ public class PanelExpendedor extends JPanel {
                     }
                 }
 
+
+                if (mouseX >= 20 && mouseX <= 420 && mouseY >= 20 && mouseY <= 420) {
+                    // rellena los depositos vacios del expendedor
+                    exp.rellenarVacios();
+                    repaint();
+                }
+
+
+
                 //clic opcional en la ranura para ingresar monedas manualmente
                 if (mouseX >= 480 && mouseX <= 550 && mouseY >= 50 && mouseY <= 70) {
                     if (PanelComprador.monedaSeleccionada != null) {

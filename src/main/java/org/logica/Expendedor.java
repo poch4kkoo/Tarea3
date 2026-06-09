@@ -58,7 +58,6 @@ public class Expendedor {
      * @throws PagoIncorrectoException Si se intenta pagar con una moneda nula.
      */
 
-    // Se elimina el parámetro Moneda m
     public void comprarProducto(EnumProducto TipoProducto)
             throws NoHayProductoException, PagoInsuficienteException {
 
@@ -115,6 +114,43 @@ public class Expendedor {
             saldo += m.getValor();
         }
     }
+
+
+    /**
+     * Revisa los depósitos de los productos, si alguno está vacío,
+     * lo vuelve a rellenar.
+     *
+     */
+    public void rellenarVacios() {
+        int cantidadRelleno = 3;
+
+        if (coca.estaVacio()) {
+            for (int i = 0; i < cantidadRelleno; i++) {
+                coca.addElemento(new CocaCola(series++));
+            }
+        }
+        if (sprite.estaVacio()) {
+            for (int i = 0; i < cantidadRelleno; i++) {
+                sprite.addElemento(new Sprite(series++));
+            }
+        }
+        if (fanta.estaVacio()) {
+            for (int i = 0; i < cantidadRelleno; i++) {
+                fanta.addElemento(new Fanta(series++));
+            }
+        }
+        if (super8.estaVacio()) {
+            for (int i = 0; i < cantidadRelleno; i++) {
+                super8.addElemento(new Super8(series++));
+            }
+        }
+        if (snickers.estaVacio()) {
+            for (int i = 0; i < cantidadRelleno; i++) {
+                snickers.addElemento(new Snickers(series++));
+            }
+        }
+    }
+
 
     /**
      * Metodo que entraga el vuelto acumulado moneda por moneda.
