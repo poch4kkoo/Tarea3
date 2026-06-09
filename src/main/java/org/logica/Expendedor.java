@@ -92,6 +92,11 @@ public class Expendedor {
             saldo = 0; // Reiniciamos el saldo actual
 
             // Generar vuelto
+            while (vuelto >= 1000) {
+                monVu.addElemento(new Moneda1000(series++));
+                vuelto-= 1000;
+            }
+
             while (vuelto >= 500) {
                 monVu.addElemento(new Moneda500(series++));
                 vuelto -= 500;
@@ -151,7 +156,6 @@ public class Expendedor {
         }
     }
 
-
     /**
      * Metodo que entraga el vuelto acumulado moneda por moneda.
      * @return Una moneda del deposito de vuelto, o null si no queda mas.
@@ -170,8 +174,6 @@ public class Expendedor {
     }
 
     public int getSaldo() { return saldo; }
-
-    //GETTERS
 
     public Deposito<Bebida> getCoca() {
         return coca;

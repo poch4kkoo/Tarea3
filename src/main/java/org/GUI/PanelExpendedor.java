@@ -1,7 +1,6 @@
 package org.GUI;
 
 import org.logica.*;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -126,13 +125,6 @@ public class PanelExpendedor extends JPanel {
 
                     if (principal != null) {
                         Comprador comprador = principal.getPanelComprador().getCom();
-
-                        //si hay una moneda seleccionada, la insertamos automa antes de comprar
-                        if (PanelComprador.monedaSeleccionada!=null) {
-                            exp.ingresarMoneda(PanelComprador.monedaSeleccionada);
-                            comprador.getMonedero().retirarElemento(PanelComprador.monedaSeleccionada);
-                            PanelComprador.monedaSeleccionada=null;//reiniciamos la selec
-                        }
 
                         try {
                             //llamamos a la compra
