@@ -1,4 +1,4 @@
-# Tarea3
+<img width="1182" height="792" alt="image" src="https://github.com/user-attachments/assets/1e32b854-3976-4b93-8240-0daef89758aa" /># Tarea3
 Integrantes:
 Javiera Antonia Diaz Grandon 
 Tomas Ignacio Pizarro Abarca
@@ -9,6 +9,11 @@ Pablo Sebastian Bascuñan Espina
 2. Abrir el proyecto en un IDE (intelliJ IDEA recomendado).
 3. Configurar el SDK (java 17 o superior).
 4. Ejecutar la clase "Main" ubicada en "src/main/java/org/Main.java".
+
+### Imagen del proyecto 
+
+<img width="1182" height="792" alt="image" src="https://github.com/user-attachments/assets/18444ebe-f21a-46e6-a61f-036b9521fdff" />
+
 
 ### Funcionamiento:
 
