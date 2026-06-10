@@ -1,7 +1,11 @@
 package org.GUI;
 
 import java.awt.*;
-
+/**
+ * Interfaz que define las constantes globales y configuraciones visuales
+ * compartidas por todos los componentes de la interfaz grafica (GUI).
+ * Centraliza elementos como dimensiones, fuentes, o rutas de recursos.
+ */
 public interface VGUI {
     int ALTO = 800;
     int LARGO = 1200;
