@@ -151,7 +151,7 @@ public class PanelComprador extends JPanel {
         graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         graphics2D.setColor(VGUI.CustomColor.GRIS_OSCURO);
-        graphics2D.fillRect(10, 0, getWidth(), getHeight());
+        graphics2D.fillRect(0, 0, getWidth(), getHeight());
 
         graphics2D.setColor(new Color(45, 49, 53));
         graphics2D.fillRoundRect(20, 20, getWidth() - 40, 340, VGUI.Borde.PEQUENO, VGUI.Borde.PEQUENO);
