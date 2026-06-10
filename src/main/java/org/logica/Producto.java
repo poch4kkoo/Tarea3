@@ -24,6 +24,10 @@ public abstract class Producto {
      */
     public abstract String consumir();
 
+    /**
+     * Retorna el numero de serie de un producto.
+     * @return Un numero entero que es el Identificador unico de un producto.
+     */
     public int getSerie(){
         return serie;
     }

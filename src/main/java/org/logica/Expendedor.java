@@ -50,12 +50,11 @@ public class Expendedor {
     }
 
     /**
-     * Metodo que procesa la compra de un producto. Valida la moneda y el stock.
+     * Metodo que procesa la compra de un producto.
      *
      * @param TipoProducto El tipo de producto solicitado (EnumProducto).
-     * @throws NoHayProductoException Si el deposito  del producto esta vacio.
-     * @throws PagoInsuficienteException Si el valor de la moneda es menor que el valor del producto.
-     * @throws PagoIncorrectoException Si se intenta pagar con una moneda nula.
+     * @throws NoHayProductoException Si el deposito del producto esta vacio.
+     * @throws PagoInsuficienteException Si el saldo acumulado es menor que el valor del producto.
      */
 
     public void comprarProducto(EnumProducto TipoProducto)
@@ -113,6 +112,12 @@ public class Expendedor {
         }
     }
 
+    /**
+     * Registra una moneda ingresada por el comprador, acumulando su valor al saldo
+     * de la transacción en curso.
+     *
+     * @param m La moneda a ingresar.
+     */
     public void ingresarMoneda(Moneda m) {
         if (m != null) {
             pagoTemporal.addElemento(m);
@@ -124,7 +129,6 @@ public class Expendedor {
     /**
      * Revisa los depósitos de los productos, si alguno está vacío,
      * lo vuelve a rellenar.
-     *
      */
     public void rellenarVacios() {
         int cantidadRelleno = 3;
@@ -173,28 +177,56 @@ public class Expendedor {
         return DepProducto.getElemento();
     }
 
+    /**
+     * Retorna el saldo acumulado en la transaccion actual.
+     * @return Un numero entero que representa el saldo acumulado por las monedas ingresadas.
+     */
     public int getSaldo() { return saldo; }
 
+    /**
+     * Retorna un deposito de CocaCola.
+     * @return Un deposito de tipo bebida con las cocacolas disponibles.
+     */
     public Deposito<Bebida> getCoca() {
         return coca;
     }
 
+    /**
+     * Retorna un deposito de Fanta.
+     * @return Un deposito de tipo bebido con las fantas disponibles.
+     */
     public Deposito<Bebida> getFanta() {
         return fanta;
     }
 
+    /**
+     * Retorna un deposito de Sprite.
+     * @return Un Deposito de tipo bebida con las sprites disponibles.
+     */
     public Deposito<Bebida> getSprite() {
         return sprite;
     }
 
+    /**
+     * Retorna el deposito de Snickers
+     * @return Un deposito de tipo dulce con los snickers disponibles.
+     */
     public Deposito<Dulce> getSnickers() {
         return snickers;
     }
 
+    /**
+     * Retorna el deposito de Super8
+     * @return Un deposito de tipo dulce con los super8 disponibles.
+     */
     public Deposito<Dulce> getSuper8() {
         return super8;
     }
 
+    /**
+     * Retorna el deposito de salida de productos comprados.
+     * @return Un Deposito de tipo Producto.
+     */
     public Deposito<Producto> getDepProducto() {
         return DepProducto;
     }

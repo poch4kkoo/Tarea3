@@ -4,30 +4,21 @@ import java.util.ArrayList;
 
 /**
  *
- * Esta clase simula ser un comprador, el cual puede elegir un producto e ingresar
- * dinero a una maquina expendedora.
- * Se encarga de procesar la compra, consumir el producto comprado,
- * recuperar el vuelto y manejar errores.
- *
+ * Esta clase simula ser un comprador que interactua con la maquina expendedora.
+ * El comprador posee un monedero con dinero inicial y puede ingresar este a la maquina
+ * expendedora, y recibir vuelto despues de una compra. Ademas de recibir el producto
+ * para su consumo.
  *
  */
 public class Comprador {
-    /** Guarda el nombre del producto comprado */
-    private String tipo;
 
+    private String tipo;
     private Deposito<Moneda> monedero;
     private Producto productoListo;
 
     /**
-     * Constructor de Comprador. Intenta realizar una compra en el expendedor.
-     * Si la compra es exitosa, consume el producto y da vuelto. Si ocurre un error,
-     * se retorna un mensaje con el respectivo fallo, y devuelve la moneda.
-     *
-     * El constructor maneja los posibles eventos o excepciones.
-     *
-     *    Si no hay stock, atrapa {@link NoHayProductoException} e imprime el aviso.
-     *     Si el pago es insuficiente, atrapa {@link PagoInsuficienteException}.
-     *     En ambos casos, asegura la recuperación de la moneda como vuelto.
+     * Crea un comprador con su monedero precargado de monedas de distinto valor
+     * y sin productos en la mano.
      */
     public Comprador(){
 
@@ -48,6 +39,9 @@ public class Comprador {
 
     }
 
+    /**
+     * Metodo que ordena las monedas del monedero de mayor a menor valor.
+     */
     private void ordenarMonedero() {
         if (this.monedero == null || this.monedero.estaVacio()) {
             return;
@@ -70,6 +64,10 @@ public class Comprador {
         }
     }
 
+    /**
+     * Agrega la moneda de vuelto al monedero y reordena las monedas.
+     * @param m La moneda de vuelto a agregar, si es null no se hace nada.
+     */
     public void recogerVuelto(Moneda m) {
         if (m != null) {
             monedero.addElemento(m);
@@ -77,6 +75,10 @@ public class Comprador {
         }
     }
 
+    /**
+     * Asigna el producto retirado de la máquina como el producto en mano del comprador.
+     * @param p El producto que se saco, o null si ya se consumio.
+     */
     public void recogerProducto(Producto p) {
         productoListo = p;
         if (productoListo != null) {
@@ -86,15 +88,29 @@ public class Comprador {
         }
     }
 
-    //GETTERS
+    /**
+     * Retorna el monedero del comprador con todas sus monedas actuales.
+     *
+     * @return Deposito de monedas que representa el monedero.
+     */
     public Deposito<Moneda> getMonedero() {
         return monedero;
     }
 
+    /**
+     * Retorna el producto que el comprador tiene en la mano actualmente.
+     *
+     * @return El Producto retirado de la maquina o null si no hay producto en la mano.
+     */
     public Producto getProductoListo() {
         return productoListo;
     }
 
+    /**
+     * Retorna el nombre del tipo de producto en mano del comprador.
+     *
+     * @return El string retornado por el metodo consumir de Producto del producto actual.
+     */
     public String getTipo() {
         return tipo;
     }
