@@ -212,7 +212,7 @@ public class PanelExpendedor extends JPanel {
 
         dibujarMuebleEstructura(g2d);
 
-        //ada estante se dibuja a si mismo
+        //cada estante se dibuja a si mismo
         for (Estante estante : estantes) {
             estante.dibujar(g2d, this);
         }
@@ -235,7 +235,7 @@ public class PanelExpendedor extends JPanel {
      * * @param g2d El contexto grafico de dos dimensiones utilizado para renderizar el mueble.
      */
     private void dibujarMuebleEstructura(Graphics2D g2d) {
-        // EXPENDEDOR CON BORDES SUAVES
+        //expendedor con bordes suaves
         g2d.setColor(VGUI.CustomColor.NEGRO);
         g2d.fillRoundRect(0, 0, getWidth(), getHeight() - 20, VGUI.Borde.NORMAL, VGUI.Borde.NORMAL);
 
