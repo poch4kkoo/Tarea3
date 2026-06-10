@@ -30,22 +30,22 @@ public class PanelExpendedor extends JPanel {
         this.setLayout(null);
         setOpaque(false);
 
-        // Fijar dimensiones del panel
+        //fijar dimensiones del panel
         Dimension tamano = new Dimension(600, 800);
         setPreferredSize(tamano);
         setMinimumSize(tamano);
         setMaximumSize(tamano);
 
-        //Inicializamos el array de filas calculando su posición Y
+        //inicializamos el array de filas calculando su posición Y
         this.estantes = new Estante[3];
 
-        // Fila 0: CocaCola y Fanta
+        //fila 0: CocaCola y Fanta
         estantes[0] = new Estante(new Deposito[]{exp.getCoca(), exp.getFanta(), null, null}, 130);
 
-        // Fila 1: Sprite
+        //fila 1: Sprite
         estantes[1] = new Estante(new Deposito[]{exp.getSprite(), null, null, null}, 260);
 
-        // Fila 2: Dulces
+        //fila 2: Dulces
         estantes[2] = new Estante(new Deposito[]{exp.getSuper8(), exp.getSnickers(), null, null}, 390);
 
         crearBotonesCompra();
@@ -54,10 +54,10 @@ public class PanelExpendedor extends JPanel {
 
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                int mouseX = e.getX();
-                int mouseY = e.getY();
+                int mouseX=e.getX();
+                int mouseY=e.getY();
 
-                // Clic para retirar producto del depósito
+                //clic para retirar producto del deposito
                 if (mouseX >= 115 && mouseX <= 325 && mouseY >= 495 && mouseY <= 580) {
                     if (exp.getDepProducto() != null && !exp.getDepProducto().estaVacio()) {
 
@@ -82,7 +82,7 @@ public class PanelExpendedor extends JPanel {
 
 
                 if (mouseX >= 20 && mouseX <= 420 && mouseY >= 20 && mouseY <= 420) {
-                    // rellena los depositos vacios del expendedor
+                    //rellena los depositos vacios del expendedor
                     exp.rellenarVacios();
                     repaint();
                 }
@@ -97,15 +97,15 @@ public class PanelExpendedor extends JPanel {
                         if (principal != null) {
                             Comprador comprador = principal.getPanelComprador().getCom();
 
-                            // Ingresamos la moneda
+                            //ingresamos la moneda
                             exp.ingresarMoneda(PanelComprador.monedaSeleccionada);
 
-                            // Eliminamos la moneda del monedero del comprador
+                            //eliminamos la moneda del monedero del comprador
                             comprador.getMonedero().retirarElemento(PanelComprador.monedaSeleccionada);
 
-                            // reinciamos monedaSeleccionada para preparar la siguiente
+                            //reinciamos monedaSeleccionada para preparar la siguiente
                             PanelComprador.monedaSeleccionada = null;
-                            principal.repaint(); // reiniciamos la pantalla
+                            principal.repaint(); //reiniciamos la pantalla
                         }
                     }
                 }
@@ -212,7 +212,7 @@ public class PanelExpendedor extends JPanel {
 
         dibujarMuebleEstructura(g2d);
 
-        // Cada estante se dibuja a si mismo
+        //ada estante se dibuja a si mismo
         for (Estante estante : estantes) {
             estante.dibujar(g2d, this);
         }
@@ -239,31 +239,31 @@ public class PanelExpendedor extends JPanel {
         g2d.setColor(VGUI.CustomColor.NEGRO);
         g2d.fillRoundRect(0, 0, getWidth(), getHeight() - 20, VGUI.Borde.NORMAL, VGUI.Borde.NORMAL);
 
-        // DETALLES
+        //detalles
         g2d.setColor(VGUI.CustomColor.GRIS_OSCURO);
         g2d.fillRect(450, 20, 130, 600);
 
-        // Compartimento de entrega de productos (abajo)
+        //compartimento de entrega de productos (abajo)
         g2d.setColor(VGUI.CustomColor.GRIS_AZUL);
         g2d.fillRoundRect(100 + 15, 495, 210, 85, VGUI.Borde.PEQUENO, VGUI.Borde.PEQUENO);
 
-        // FONDO INTERIOR EXPENDEDOR
+        //fondo interior expendedor
         g2d.fillRect(20, 20, 400, 400);
 
-        // Pantalla del Expendedor
+        //pantalla del Expendedor
         g2d.setColor(VGUI.CustomColor.CIAN);
         g2d.fillRect(460, 70, 110, 30);
 
-        // Saldo en la pantalla CIAN
+        //saldo en la pantalla CIAN
         g2d.setColor(Color.BLACK);
         g2d.setFont(new Font(VGUI.FONT, Font.BOLD, VGUI.TamanoFuente.CUERPO));
         g2d.drawString("Saldo: $" + exp.getSaldo(), 465, 90);
 
-        // Ranura para monedas
+        //ranura para monedas
         Image imgRanura = Imagenes.get("ranura");
         g2d.drawImage(imgRanura, 445, 110, 140, 120, this);
 
-        // INTERIOR EXPENDEDOR
+        //interior expendedor
         g2d.setColor(VGUI.CustomColor.GRIS_AZUL);
         g2d.fillRect(20, 20, 400, 400);
     }
