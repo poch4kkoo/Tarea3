@@ -110,6 +110,7 @@ classDiagram
         +Moneda monedaSeleccionada$
         +PanelComprador(comprador Comprador)
         -obtenerImagenProducto(p Producto) Image
+        +paintComponent(g Graphics) void
         +getCom() Comprador
     }
 
