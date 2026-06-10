@@ -9,12 +9,26 @@ import java.awt.event.MouseEvent;
 
 import org.logica.*;
 
+/**
+ * Panel de la interfaz garfica que representa al comprador.
+ *
+ * Muestra visualmente el monedero del comprador con las monedas que este dispone.
+ * Ademas de la mano, en la cual puede tener un pproducto o estar vacia y un botan paar cusmir el producto.
+ *
+ * Tambien gestiona la seleccion de monedas, y muestra su numero de serie al pasar el cursor sobre ellas.
+ */
 public class PanelComprador extends JPanel {
 
     private Comprador com;
     private JButton botonConsumir;
     public static Moneda monedaSeleccionada = null;
 
+    /**
+     * Crea el panel del comprador, configura su tamaño, layout, botón de consumo
+     * y los detectores de eventos de ratón para selección de monedas y tooltips.
+     *
+     * @param comprador Es el comprador cuyo estado se mostrara en este panel.
+     */
     public PanelComprador(Comprador comprador) {
         super();
 
@@ -82,6 +96,7 @@ public class PanelComprador extends JPanel {
             }
         });
 
+        //detector de movimiento: muestra el numero de serie al pasar sobre una moneda
         addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
 
             @Override
@@ -127,6 +142,12 @@ public class PanelComprador extends JPanel {
         });
     }
 
+    /**
+     * Retorna la imagen correspondiente a un producto según su tipo en tiempo de ejecución.
+     * @param p El producto del cual se quiere obtener la imagen.
+     *
+     * @return La imagen asociada a un tipo de producto.
+     */
     private Image obtenerImagenProducto(Producto p) {
         if (p == null) {
             return null;
@@ -143,6 +164,11 @@ public class PanelComprador extends JPanel {
         return null;
     }
 
+    /**
+     * Dibuja el contenido visual del panel del comprador.
+     *
+     * @param g the <code>Graphics</code> object to protect
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -254,6 +280,11 @@ public class PanelComprador extends JPanel {
         }
     }
 
+    /**
+     * Retorna le comprador asociado a este panel.
+     *
+     * @return El comprador cuyo estado se esta visualizando.
+     */
     public Comprador getCom() {
         return com;
     }
