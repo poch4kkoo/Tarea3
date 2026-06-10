@@ -1,4 +1,3 @@
-<img width="1182" height="792" alt="image" src="https://github.com/user-attachments/assets/1e32b854-3976-4b93-8240-0daef89758aa" /># Tarea3
 Integrantes:
 Javiera Antonia Diaz Grandon 
 Tomas Ignacio Pizarro Abarca
