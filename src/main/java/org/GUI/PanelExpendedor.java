@@ -5,13 +5,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * Panel que representa la interfaz grafica del expendedor de productos.
+ * se encarga de la gestion del diseño visual de la maquina, mostrando los estantes,
+ * el deposito de productos para retirar, los botones interactivos de compra, la ranura
+ * de ingreso de monedas y la pantalla con el saldo retenido en tiempo real.
+ */
 
 public class PanelExpendedor extends JPanel {
 
     private final Expendedor exp;
     private final Estante[] estantes;
 
+    /**
+     * Constructor del panel del expendedor, configura el diseño nulo para posicionamiento
+     * absoluto, inicializa los estantes de productos mapeando los depositos logicos y
+     * establece los mouselisteners para interactuar con la ranura de monedas y la bandeja de retiro.
+     * * @param exp instancia de la clase logica expendedor que maneja las transacciones y stock.
+     */
     public PanelExpendedor(Expendedor exp) {
         this.exp = exp;
 
@@ -101,7 +112,11 @@ public class PanelExpendedor extends JPanel {
             }
         });
     }
-
+    /**
+     * Crea e inicializa de manera dinamica los botones de compra para cada tipo de producto.
+     * implementa la logica que detecta si el comprador tiene una moneda seleccionada para ingresarla
+     * de forma automatica antes de procesar la orden de compra.
+     */
     private void crearBotonesCompra() {
         String[] nombres = {"CocaCola", "Fanta", "Sprite", "Super8", "Snickers"};
         EnumProducto[] productos = {
@@ -155,6 +170,11 @@ public class PanelExpendedor extends JPanel {
             this.add(btn);
         }
     }
+    /**
+     * Mapea un deposito especifico del expendedor con su respectiva imagen.
+     * * @param deposito El deposito logico de la maquina.
+     * @return Image asociada al tipo de producto que almacena el deposito, o null si no aplica.
+     */
 
     public Image obtenerImagen(Deposito deposito) {
         if (deposito == exp.getCoca()) return Imagenes.get("cocacola");
@@ -165,13 +185,25 @@ public class PanelExpendedor extends JPanel {
         return null;
     }
 
-    // metodo de ayuda alternativo para cuando se extrae directamente del deposito de productos
+    //metodo de ayuda alternativo para cuando se extrae directamente del deposito de productos
+    /**
+     * Obtiene de forma dinamica la imagen de un objeto Producto especifico basandose en el
+     * nombre de su clase para renderizarlo correctamente en la bandeja de salida.
+     * * @param p El objeto Producto comprado que se encuentra en el deposito de salida.
+     * @return Image correspondiente al producto grafico, o null si el producto es nulo.
+     */
     public Image obtenerImagenDeProducto(Producto p) {
         if (p==null) return null;
         String clase=p.getClass().getSimpleName().toLowerCase(); //
         return Imagenes.get(clase);
     }
 
+    /**
+     * Metodo encargado de pintar y redibujar todos los componentes visuales del expendedor.
+     * Dibuja la estructura del mueble, invoca el renderizado de cada estante y posiciona
+     * el producto en la bandeja inferior si una compra fue exitosa.
+     * * @param g El objeto Graphics utilizado para las funciones de dibujo en Swing.
+     */
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -196,7 +228,12 @@ public class PanelExpendedor extends JPanel {
             }
         }
     }
-
+    /**
+     * Dibuja los componentes estructurales fijos de la maquina expendedora.
+     * Incluye el exterior negro, el panel lateral gris oscuro, el fondo interior,
+     * la pantalla para el saldo, la ranura de monedas y el compartimento de entrega.
+     * * @param g2d El contexto grafico de dos dimensiones utilizado para renderizar el mueble.
+     */
     private void dibujarMuebleEstructura(Graphics2D g2d) {
         // EXPENDEDOR CON BORDES SUAVES
         g2d.setColor(VGUI.CustomColor.NEGRO);

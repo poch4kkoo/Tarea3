@@ -2,10 +2,20 @@ package org.GUI;
 
 import javax.swing.*;
 import java.awt.*;
+/**
+ * Clase principal de la interfaz grafica que extiende de JFrame.
+ * Actua como la ventana contenedora principal de la aplicacion, configurando
+ * el tamaño de la pantalla, el comportamiento de cierre y montando el PanelPrincipal.
+ */
 
 public class Ventana extends JFrame {
     private PanelPrincipal pri;
 
+    /**
+     * Constructor de la Ventana. Configura las propiedades esenciales del marco
+     * (titulo, operacion de salida por defecto, centrado en pantalla y la dimesion)
+     * e inicializa el PanelPrincipal que contiene la simulacion.
+     */
     public Ventana() {
         super();
         this.setLayout(new BorderLayout());
