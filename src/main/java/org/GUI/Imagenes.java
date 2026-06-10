@@ -6,9 +6,19 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * Clase encargada de buscar y cargar las imagenes necesarias para el expendedor
+ */
 public class Imagenes {
+
+    /** * Mapa estático que almacena las imágenes*/
     private static final Map<String, Image> imagenes = new HashMap<>();
 
+
+    /**
+     * Bloque que intenta leer todas las rutas de las imagenes
+     */
     static {
         try {
             imagenes.put("cocacola", ImageIO.read(Imagenes.class.getResource("/Productos/cocacola.png")));
